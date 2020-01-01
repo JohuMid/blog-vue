@@ -9,10 +9,10 @@
                             <el-col :span="20" :offset="2">
                                 <el-form ref="form" :model="form" label-width="80px">
                                     <el-form-item label="标题">
-                                        <el-input v-model="form.userTheme"></el-input>
+                                        <el-input v-model="form.userTheme" >{{this.childTheme}}</el-input>
                                     </el-form-item>
                                     <el-form-item label="正文">
-                                        <VueEditor @func="getMsgFormSon"></VueEditor>
+                                        <VueEditor @func="getMsgFormSon" @func1="getThemeFormSon"></VueEditor>
                                     </el-form-item>
                                     <el-form-item>
                                         <el-button type="primary" @click="getPublish">发布文章</el-button>
@@ -29,52 +29,39 @@
 
 <script>
   import VueEditor from "../../components/VueEditor";
-  import {publishTopic, getTopicDetail} from "../../service/api";
+  import {publishTopic, updateTopic} from "../../service/api";
   import {Message} from 'element-ui';
   import {Base64} from 'js-base64'
   import {mapState} from 'vuex'
 
 
   export default {
-    name: "Publish",
+    name: "EditPublish",
     data() {
       return {
         form: {
           userTheme: '',
         },
         content: null,
-        editorOption: {}
+        editorOption: {},
+        childContent: null,
+        childTheme: ''
       }
     },
     components: {
       VueEditor
     },
-    created() {
-      this.editPublish()
-    },
     computed: {
       ...mapState(['userInfo'])
     },
+    created() {
+      this.init()
+    },
     methods: {
-
-      async editPublish() {
-        if (this.$route.params.tId) {
-          let res = await getTopicDetail(this.$route.params.tId)
-
-          if (res.err_code === 0) {
-
-            res=JSON.parse(res.results)[0]
-
-            console.log(res);
-            this.form.userTheme = res.tTopic
-            this.content = Base64.decode(res.tContents)
-          }
-        } else {
-
-        }
+      init() {
+        // 加载防止闪烁
+        this.$emit('func', '我好了')
       },
-
-
       async getPublish() {
 
         if (!(this.form.userTheme.trim())) {
@@ -82,20 +69,28 @@
         } else if (!this.content) {
           Message('请填写文章正文!');
         } else {
-          let res = await publishTopic(this.userInfo.uId, this.form.userTheme, Base64.encode(this.content))
+
+          console.log(this.form.userTheme);
+          let res = await updateTopic(this.$route.params.tId, this.form.userTheme, Base64.encode(this.content))
 
           if (res.err_code === 0) {
             Message({
               type: 'success',
               showClose: true,
-              message: '发布成功!'
+              message: '修改成功!'
             });
-            this.$router.push('/')
+            this.$router.push('/navbar/user')
           }
         }
       },
       getMsgFormSon(data) {
+
+
         this.content = data
+      },
+      getThemeFormSon(data){
+        this.form.userTheme = data
+
       }
     }
   }

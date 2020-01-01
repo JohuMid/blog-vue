@@ -1,32 +1,69 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <div id="container">
+            <div id="output"></div>
+        </div>
+        <router-view v-if="isRouterAlive"></router-view>
     </div>
-    <router-view/>
-  </div>
 </template>
 
+<script>
+
+  import $ from 'jquery'
+  import {Victor} from './plugins/background/vector'
+
+  export default {
+    provide() {
+      return {
+        reload: this.reload
+      }
+    },
+    created() {
+      this.initBg()
+    },
+    data() {
+      return {
+        style: '',
+        isRouterAlive: true
+      }
+    },
+    methods: {
+      initBg() {
+        $(function () {
+          // 初始化 传入dom id
+          var victor = new Victor("container", "output");
+        });
+      },
+      reload() {
+        this.isRouterAlive = false;
+        this.$nextTick(() => (this.isRouterAlive = true))
+      }
+    },
+
+  }
+</script>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
+    #app {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+    * {
+        margin: 0;
+        padding: 0;
+    }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+    #container {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+    }
+
+    #output {
+        width: 100%;
+        height: 100%;
+    }
 </style>

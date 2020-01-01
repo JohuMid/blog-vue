@@ -1,10 +1,17 @@
-module.export = {
-  proxyTable: {
-    '/': {                                // 要代理的接口名
-      target: 'http://127.0.0.1:3000/',   // 要代理的接口地址
-      changeOrigin: true,                            // 允许跨域
-      pathRewrite: {'/': ''}            // 接口名重写
-    },
+module.exports = {
+  devServer: {
+    port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000/',  // target host
+        ws: true,  // proxy websockets
+        changeOrigin: true,  // needed for virtual hosted sites
+        pathRewrite: {
+          '^/api': ''  // rewrite path
+        }
+      },
+    }
   }
+};
 
-}
+
