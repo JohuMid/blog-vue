@@ -102,12 +102,6 @@
               showClose: true,
               message: '验证码错误!'
             });
-          } else if (res.err_code === 2) {
-            Message({
-              type: 'warning',
-              showClose: true,
-              message: '此邮箱已经被注册!'
-            });
           } else if (res.err_code === 0) {
             Message({
               type: 'success',
@@ -127,7 +121,14 @@
           Message('请正确填写用户密码!(6-20位包含数字和字母)');
         } else {
           let res = await getVecode(this.form.userEmail, this.form.userName)
-          if (res.err_code === 0) {
+
+          if (res.err_code === 2) {
+            Message({
+              type: 'warning',
+              showClose: true,
+              message: '此邮箱已经被注册!'
+            });
+          } else if (res.err_code === 0) {
             Message({
               type: 'success',
               showClose: true,
@@ -142,9 +143,10 @@
 </script>
 
 <style scoped>
-    #register{
+    #register {
         margin: 100px auto;
     }
+
     .leftbox {
         width: 100%;
         height: 400px;
@@ -154,6 +156,7 @@
         opacity: 0.7;
 
     }
+
     .rightbox {
         text-align: center;
     }

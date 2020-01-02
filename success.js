@@ -25,16 +25,18 @@ Johu 2019/12/6 15:16:36.
 // 新建触发器 INSERT INTO tempstate(sId,fromId,toId,tId,type,sTime) VALUES(new.sId,new.fromId,new.toId,new.tId,new.type,new.sTime)
 // 下午实现用户选中Tabs停留
 
-// 发现bug多用户注册有问题，应该一人分配一个验证码不共用数组
+// 发现bug 多用户注册有问题，应该一人分配一个验证码不共用数组
+// 解决方案：创建临时验证码表，对应查找
+// 忘记密码对应方法解决
+// 验证码发送BUG解决
 
 
-
-user_info = [
+/*user_info = [
   {
     "token": "5deb159d807eae1d6558e138",
     "real_name": "小撩宝宝",
     "phone": "17756728198",
     "icon_url": "http://www.itlike.com/uploads/picture/20190814/80b52b5d5b25db373c0aee56e7df4e80.png"
   },
-]
+]*/
 
