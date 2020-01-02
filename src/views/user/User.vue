@@ -34,6 +34,11 @@
                                     <UserFans></UserFans>
                                 </div>
                             </el-tab-pane>
+                            <el-tab-pane label="消息中心" name="sixth" :key="'sixth'">
+                                <div class="usernews" v-if="isSixth">
+                                    <UserNews></UserNews>
+                                </div>
+                            </el-tab-pane>
                         </el-tabs>
                     </template>
                 </div>
@@ -48,6 +53,7 @@
   import UserAttention from "./components/UserAttention";
   import UserCollect from "./components/UserCollect";
   import UserFans from "./components/UserFans";
+  import UserNews from "./components/UserNews";
 
   export default {
     name: "User",
@@ -59,7 +65,9 @@
         isSecond: false,
         isThird: false,
         isForth: false,
-        isFifth: false
+        isFifth: false,
+        isSixth: false
+
       };
     },
     created() {
@@ -71,7 +79,8 @@
       UserAttention,
       UserArticle,
       UserCollect,
-      UserFans
+      UserFans,
+      UserNews
     },
     methods: {
       // 点击Tab标签实时加载
@@ -82,24 +91,29 @@
           this.isSecond = false
           this.isThird = false
           this.isForth = false
+          this.isSixth = false
           this.activeName = 'first'
         } else if (tab.name === 'second') {
           this.isFirst = false
           this.isSecond = true
           this.isThird = false
           this.isForth = false
+          this.isSixth = false
           this.activeName = 'second'
         } else if (tab.name === 'third') {
           this.isFirst = false
           this.isSecond = false
           this.isThird = true
           this.isForth = false
+          this.isSixth = false
           this.activeName = 'third'
         } else if (tab.name === 'forth') {
           this.isFirst = false
           this.isSecond = false
           this.isThird = false
           this.isForth = true
+          this.isSixth = false
+
           this.activeName = 'forth'
         } else if (tab.name === 'fifth') {
           this.isFirst = false
@@ -107,7 +121,18 @@
           this.isThird = false
           this.isForth = false
           this.isFifth = true
+          this.isSixth = false
+
           this.activeName = 'fifth'
+        } else if (tab.name === 'sixth') {
+          this.isFirst = false
+          this.isSecond = false
+          this.isThird = false
+          this.isForth = false
+          this.isFifth = false
+          this.isSixth = true
+
+          this.activeName = 'sixth'
         }
 
       }
@@ -129,7 +154,7 @@
     }
 
     .el-tabs {
-        height: auto!important;
+        height: auto !important;
     }
 
 

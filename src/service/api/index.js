@@ -111,6 +111,11 @@ export const getUserFans = (uId, pageNum, currentPage) => ajax(LOCAL_BASE_URL + 
   pageNum,
   currentPage
 });
+// 获取粉丝信息
+export const getUserNews = (uId) => ajax(LOCAL_BASE_URL + '/usernews', {
+  uId,
+});
+
 // 获取文章详细信息
 export const getTopicDetail = (topicIndex) => ajax(LOCAL_BASE_URL + '/topicdetail', {topicIndex}, 'POST');
 // 上一篇

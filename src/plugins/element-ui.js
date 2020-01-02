@@ -127,6 +127,10 @@ Vue.use(Cascader)
 import {Upload} from 'element-ui'
 
 Vue.use(Upload)
+// 引入时间线组件
+import {Timeline,TimelineItem} from 'element-ui'
+
+Vue.use(Timeline).use(TimelineItem)
 
 
 import {Message, MessageBox} from "element-ui";

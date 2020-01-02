@@ -8,7 +8,7 @@
             </router-link>
 
             <el-col :span="4" style="line-height: 60px;position: relative;">
-                <el-input placeholder="请输入内容" v-model="searchInput" class="input-with-select">
+                <el-input placeholder="请输入内容进行搜索" v-model="searchInput" class="input-with-select">
 
                 </el-input>
                 <span class="el-icon-search"
@@ -189,6 +189,7 @@
           this.searchInput=''
         }
       },
+
       getMsgFormSon(data) {
         if (data === '我好了') {
           this.loading = 0
