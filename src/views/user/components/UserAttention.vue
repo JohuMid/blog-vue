@@ -1,7 +1,7 @@
 <template>
     <div id="userattention">
         <ul class="media-list">
-            <li v-for="(item,index) in attentionList" :key="item.aId" class="list-shadow list">
+            <li v-for="(item,index) in attentionList" :key="item.aId">
                 <el-row>
                     <el-col :span="4" style="text-align: center;width: 80px;">
                         <div class="grid-content ">
@@ -29,6 +29,8 @@
                         </div>
                     </el-col>
                 </el-row>
+                <el-divider></el-divider>
+
             </li>
         </ul>
         <div v-if="isShow" style="text-align: center">

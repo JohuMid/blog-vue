@@ -83,5 +83,16 @@ Vue.filter('aboutWord', (value) => {
   }
 })
 
+// 时间线图标过滤器
+
+Vue.filter('timelineIcon', (value) => {
+  if (value == 'star') {
+    return 'el-icon-star-off'
+  } else if (value == 'chat') {
+    return 'el-icon-chat-line-round'
+  } else if (value == 'like') {
+    return 'el-icon-sunny'
+  }
+})
 
 

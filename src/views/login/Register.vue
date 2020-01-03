@@ -109,7 +109,7 @@
               message: '注册成功!'
             });
             this.$router.push('/')
-            
+
           }
         }
       },

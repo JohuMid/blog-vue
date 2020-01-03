@@ -51,7 +51,8 @@
         timeline:{
           size: 'large',
           type: 'primary',
-          color: '#409eff'
+          color: '#409eff',
+          icon:'el-icon-more'
         },
         //  控制页面内容有无
         isShow: false,

@@ -1,7 +1,7 @@
 <template>
     <div id="userarticle">
         <ul class="media-list">
-            <li v-for="(item , id) in topicList" :key="id" class="list-shadow list">
+            <li v-for="(item , id) in topicList" :key="id">
                 <el-row>
                     <el-col :span="4" style="text-align: center;width: 80px;">
                         <div class="grid-content ">
@@ -40,6 +40,8 @@
 
 
                 </el-row>
+                <el-divider></el-divider>
+
             </li>
         </ul>
         <div v-if="isShow" style="text-align: center" v-cloak>

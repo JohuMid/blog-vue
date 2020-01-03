@@ -6,13 +6,12 @@
 
         <ul class="media-list">
             <el-row :gutter="20">
-                <el-col :span="16" :offset="4">
+                <el-col :span="12" :offset="4" >
                     <div class="theme">
                         最新文章
                     </div>
                     <div>
-
-                        <li v-for="(item , index) in topicList" :key="item.tId" class="list-shadow list">
+                        <li v-for="(item , index) in topicList" :key="item.tId">
                             <el-row>
                                 <el-col :span="4" style="text-align: center;width: 80px;">
                                     <div class="grid-content ">
@@ -26,7 +25,7 @@
                                         </router-link>
                                     </div>
                                 </el-col>
-                                <el-col :span="12">
+                                <el-col :span="14">
                                     <div class="grid-content">
                                         <p class="title">
                                             <el-link type="primary">
@@ -51,7 +50,7 @@
                                 <el-col v-if="!item.tHeadImage">
 
                                 </el-col>
-                                <el-col :span="6" v-else>
+                                <el-col :span="4" v-else>
 
                                     <div class="block">
                                         <el-image
@@ -62,6 +61,7 @@
 
                                 </el-col>
                             </el-row>
+                            <el-divider></el-divider>
                         </li>
 
                         <div v-infinite-scroll="loadMore">
@@ -74,6 +74,9 @@
                         </div>
                     </div>
                 </el-col>
+                <!--<el-col :span="4" :offset="16" style="position: absolute;width: 280px;height: 300px;background: #000;" >
+
+                </el-col>-->
             </el-row>
         </ul>
 

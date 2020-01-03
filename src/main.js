@@ -37,8 +37,28 @@ Vue.prototype.imgBaseUrl = 'http://localhost:3000/public/images/avatar/'
 // 文章图片基础路径
 Vue.prototype.topicImgBaseUrl = 'http://localhost:3000/public/images/topic/'
 
+import VueQuillEditor from 'vue-quill-editor'
+
+Vue.use(VueQuillEditor)
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 // 代码块高亮样式文件
-import 'highlight.js/styles/xcode.css'
+// import 'highlight.js/styles/xcode.css'
+
+import hljs from 'highlight.js' //导入代码高亮文件
+import 'highlight.js/styles/monokai-sublime.css'  //导入代码高亮样式
+
+//自定义一个代码高亮指令
+Vue.directive('highlight',function (el) {
+  let highlight = el.querySelectorAll('pre code');
+  highlight.forEach((block)=>{
+    hljs.highlightBlock(block)
+  })
+})
+
 
 
 

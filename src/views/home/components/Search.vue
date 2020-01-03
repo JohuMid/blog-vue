@@ -2,6 +2,7 @@
     <div id="search">
 
         <ul class="media-list">
+            <div class="fillbox"></div>
             <el-row :gutter="20">
                 <el-col :span="16" :offset="4">
                     <div v-if="!searchData[0]" style="z-index: 9;text-align: center;width: 100%;">
@@ -9,7 +10,7 @@
                         <p style="font-weight: bolder">没有查询到结果~</p>
 
                     </div>
-                    <li v-for="(item , index) in searchData" :key="item.tId" class="list-shadow list" v-else>
+                    <li v-for="(item , index) in searchData" :key="item.tId"  v-else>
                         <el-row>
                             <el-col :span="4" style="text-align: center;width: 80px;">
                                 <div class="grid-content ">
@@ -59,6 +60,8 @@
 
                             </el-col>
                         </el-row>
+                        <el-divider></el-divider>
+
                     </li>
 
 
@@ -133,6 +136,10 @@
         font-size: 15px;
         line-height: 26px;
         color: #999;
+    }
+    .fillbox{
+        width: 100%;
+        height: 20px;
     }
 
 </style>

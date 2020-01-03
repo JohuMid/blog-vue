@@ -56,7 +56,7 @@
       this.init()
     },
     methods: {
-      init(){
+      init() {
         // 加载防止闪烁
         this.$emit('func', '我好了')
       },

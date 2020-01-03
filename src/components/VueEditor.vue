@@ -106,59 +106,59 @@
           return false;
         }
 
-        // 上传图片名称
-        // console.log(file.name);
-        this.fileName = file.name
-        // fileReader 接口，用于异步读取文件数据
-        var reader = new FileReader();
-        reader.readAsDataURL(file); //重要 以dataURL形式读取文件
-        reader.onload = e => {
-
-          let quill = this.$refs.myQuillEditor.quill
-
-          // data = window.URL.createObjectURL(new Blob([e.target.result])) 转化为blob格式
-
-          // 上传图片详细 base64
-          let urldata = e.target.result
-          // console.log(data)
-          // this.attach.customaryUrl = data
-          // 转化为base64
-          // reader.readAsDataURL(file)
-          // 转化为blob
-
-          let img = new Image(),
-            _this = this
-          // 输入原图的base64编码
-          img.src = urldata
-
-          img.onload = async function () {
-            // 压缩方法
-            let newImg = _this.compress(img)
-
-            let res = await uploadTopicImg(_this.userInfo.uId, newImg);
-
-            if (res.err_code === 0) {
-
-              // console.log(res);
+        if (file.size >= 5000000) {
+          Message.warning('请选择小于5MB的图像上传')
+        } else {
+// 上传图片名称
+          // console.log(file.name);
+          this.fileName = file.name
+          // fileReader 接口，用于异步读取文件数据
+          var reader = new FileReader();
+          reader.readAsDataURL(file); //重要 以dataURL形式读取文件
+          reader.onload = e => {
 
 
-              // 插入图片到富文本编辑器
-              let quill = _this.$refs.myQuillEditor.quill
-              // 获取光标所在位置
-              let length = quill.getSelection().index;
-              // 插入图片，res为服务器返回的图片链接地址
-              quill.insertEmbed(length, 'image', 'http://localhost:3000/public/images/topic/' + res.results)
-              // 调整光标到最后
-              quill.setSelection(length + 1);
+            // 上传图片详细 base64
+            let urldata = e.target.result
+            // console.log(data)
+            // this.attach.customaryUrl = data
+            // 转化为base64
+            // reader.readAsDataURL(file)
+            // 转化为blob
 
-              Message({
-                type: 'success',
-                showClose: true,
-                message: '插入图片成功!'
-              });
-            } else {
-              // 提示信息，需引入Message
-              Message.error('图片插入失败')
+            let img = new Image(),
+              _this = this
+            // 输入原图的base64编码
+            img.src = urldata
+
+            // console.log(img);
+
+            img.onload = async function () {
+              // 压缩方法
+              let newImg = _this.compress(img)
+
+              let res = await uploadTopicImg(_this.userInfo.uId, newImg);
+
+              if (res.err_code === 0) {
+
+                // 插入图片到富文本编辑器
+                let quill = _this.$refs.myQuillEditor.quill
+                // 获取光标所在位置
+                let length = quill.getSelection().index;
+                // 插入图片，res为服务器返回的图片链接地址
+                quill.insertEmbed(length, 'image', 'http://localhost:3000/public/images/topic/' + res.results)
+                // 调整光标到最后
+                quill.setSelection(length + 1);
+
+                Message({
+                  type: 'success',
+                  showClose: true,
+                  message: '插入图片成功!'
+                });
+              } else {
+                // 提示信息，需引入Message
+                Message.error('图片插入失败')
+              }
             }
           }
         }

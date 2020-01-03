@@ -43,8 +43,11 @@ h1, h3 {
     padding-top: 20px;
     margin-top: 5px;
     padding-bottom: 20px;
-    background: #fff;
+    /*background: #fff;*/
 
+}
+.el-divider{
+    line-height: 10px;
 }
 
 .el-input__inner {
@@ -64,26 +67,6 @@ h1, h3 {
     max-height: 300px;
 }
 
-/* 文章图片大小框定*/
-
-.topicImg img {
-    max-width: 999px;
-}
-
-/*代码块样式*/
-.ql-syntax{
-    background: #000;
-    color: white;
-    border-radius: 5px;
-    line-height: 20px;
-    overflow-x: auto;
-}
-
-@media screen and (max-width: 1400px) {
-    .topicImg img {
-        width: 100%;
-    }
-}
 
 
 

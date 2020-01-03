@@ -20,7 +20,7 @@ Johu 2019/12/6 15:16:36.
 // 明日尽量收藏消息通知
 // 富文本编辑器图片上传改进
 // 文章头图和摘要实现
-// 消息中心实现
+// 1.2消息中心实现
 // 新建临时表保存临时状态消息
 // 新建触发器 INSERT INTO tempstate(sId,fromId,toId,tId,type,sTime) VALUES(new.sId,new.fromId,new.toId,new.tId,new.type,new.sTime)
 // 下午实现用户选中Tabs停留
@@ -29,6 +29,9 @@ Johu 2019/12/6 15:16:36.
 // 解决方案：创建临时验证码表，对应查找
 // 忘记密码对应方法解决
 // 验证码发送BUG解决
+
+// 1.3美化界面
+// 新建大量用户数据
 
 
 /*user_info = [

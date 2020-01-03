@@ -442,15 +442,15 @@ export const Victor = (container, anitOut) => {
       xRange: 0.8,
       yRange: 0.1,
       zRange: 1,
-      ambient: "#525252",
-      diffuse: "#FFFFFF",
+      ambient: "#727272",
+      diffuse: "#8c8c8c",
       speed: 0.0002
     };
     var G = {
       count: 2,
       xyScalar: 1,
       zOffset: 100,
-      ambient: "#ececec",
+      ambient: "#f0f0f0",
       diffuse: "#afafaf",
       speed: 0.001,
       gravity: 1200,

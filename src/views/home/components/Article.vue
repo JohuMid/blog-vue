@@ -27,11 +27,13 @@
                                                 <el-col :span="12">
                                                     <div class="grid-content ">
                                                         <h3>作者：</h3>
-                                                        <p v-cloak>{{userName}}</p>
+                                                        <router-link
+                                                                :to="`/navbar/users/`+this.uId+``">
+                                                            <p v-cloak>{{userName}}</p>
+                                                        </router-link>
                                                     </div>
                                                 </el-col>
                                             </el-row>
-
                                         </div>
                                     </el-col>
                                 </el-row>
@@ -41,8 +43,12 @@
                         <div>
                             <el-row :gutter="20">
                                 <el-col :span="22" :offset="1">
-                                    <div class="words topicImg" v-html="contents"></div>
-<!--                                    正文开始-->
+                                    <div class="ql-container ql-snow">
+                                        <div class="ql-editor" v-html="contents" v-highlight>
+                                            <!--                                            正文开始-->
+                                        </div>
+                                    </div>
+
                                 </el-col>
                             </el-row>
                         </div>
@@ -226,8 +232,6 @@
 
           var reg = /<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\1[^>]*?\/?\s*>/;
 
-          var src = /\bsrc\b\s*=\s*[\'\"]?([^\'\"]*)[\'\"]?/i
-
           var url = (this.contents.match(reg)[0]);
 
           var insertHtml;
@@ -303,9 +307,8 @@
         padding-bottom: 20px;
     }
 
-    .words {
-        word-wrap: break-word;
-        word-break: break-all;
+    .ql-container {
+        border: none;
     }
 
     .rightbar {
