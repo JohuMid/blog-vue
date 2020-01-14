@@ -65,7 +65,7 @@
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :page-sizes="[10, 20, 30, 40]"
+                    :page-sizes="[50, 100, 200, 300]"
                     :page-size="5"
                     layout="total, sizes, prev, pager, next"
                     :total="total">
@@ -85,7 +85,7 @@
         // 总条数
         total: 0,
         // 每页条数
-        pageNum: 10,
+        pageNum: 50,
         // 当前页面
         currentPage: 1,
         search: ''

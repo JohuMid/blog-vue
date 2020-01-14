@@ -45,25 +45,27 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
-// 代码块高亮样式文件
-// import 'highlight.js/styles/xcode.css'
 
-import hljs from 'highlight.js' //导入代码高亮文件
-import 'highlight.js/styles/monokai-sublime.css'  //导入代码高亮样式
 
-//自定义一个代码高亮指令
+import hljs from 'highlight.js'
+import 'highlight.js/styles/googlecode.css' //样式文件
 Vue.directive('highlight',function (el) {
-  let highlight = el.querySelectorAll('pre code');
-  highlight.forEach((block)=>{
+  let blocks = el.querySelectorAll('pre code');
+  blocks.forEach((block)=>{
     hljs.highlightBlock(block)
   })
 })
 
+// 引入图表文件
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/chart/bar'
 
-
-
-
-
+import 'echarts/lib/component/title.js'
+import 'echarts/lib/component/legend'
+import 'echarts/lib/component/tooltip'
+Vue.component('chart', ECharts)
 
 new Vue({
   router,

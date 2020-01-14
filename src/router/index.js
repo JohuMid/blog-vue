@@ -21,6 +21,9 @@ import Article from "../views/home/components/Article";
 // 搜索界面
 import Search from "../views/home/components/Search";
 
+// 用户分析
+import UserAnalysis from "../views/backstage/components/UserAnalysis";
+
 // 后台页面
 import Backstage from "../views/backstage/Backstage";
 
@@ -61,6 +64,7 @@ export default new VueRouter({
       children: [
         {path: '/backstage', redirect: '/backstage/usermanage'},
         {path: 'usermanage', name: 'usermanage', component: UserManage,},
+        {path: 'useranalysis', name: 'useranalysis', component: UserAnalysis,},
         {path: 'articlemanage/:uId', name: 'articlemanage', component: ArticleManage},
         {path: 'articlemanage', name: 'articlemanage', component: ArticleManage},
         {path: 'chatmanage/:tId', name: 'chatmanage', component: ChatManage},

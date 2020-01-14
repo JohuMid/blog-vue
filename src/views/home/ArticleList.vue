@@ -88,8 +88,6 @@
   import {getTopicList} from "../../service/api";
   import infiniteScroll from 'vue-infinite-scroll'
   import Carousel from "./components/Carousel";
-  import {Base64} from 'js-base64'
-
 
   export default {
     name: "ArticleList",

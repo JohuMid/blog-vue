@@ -33,12 +33,24 @@
                 <el-menu
                         default-active="defaultActive">
 
-                    <router-link to="/backstage/usermanage">
-                        <el-menu-item index="1">
+                    <el-submenu index="1">
+                        <template slot="title">
                             <i class="el-icon-user"></i>
-                            <span slot="title">用户管理</span>
-                        </el-menu-item>
-                    </router-link>
+                            <span>用户管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">用户</template>
+                            <router-link to="/backstage/usermanage">
+                                <el-menu-item index="1-1">用户管理</el-menu-item>
+                            </router-link>
+                            <router-link to="/backstage/useranalysis">
+                                <el-menu-item index="1-2">用户分析</el-menu-item>
+                            </router-link>
+
+                        </el-menu-item-group>
+                    </el-submenu>
+
+
                     <router-link to="/backstage/articlemanage">
 
                         <el-menu-item index="2">

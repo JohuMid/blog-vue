@@ -62,7 +62,7 @@
   import {getStore} from "../../../config/global";
   import {Message} from "element-ui";
 
-  import { provinceAndCityData } from 'element-china-area-data'
+  import {provinceAndCityData} from 'element-china-area-data'
 
 
   export default {
@@ -98,14 +98,35 @@
 
       async getAllData() {
 
-        // 如果点击用户是当前用户直接跳转到个人中心
-        if (this.$route.params.uId == this.userInfo.uId) {
 
-          this.$router.push('/navbar/user')
+        if (this.userInfo) {
+          // 如果点击用户是当前用户直接跳转到个人中心
+
+          if (this.$route.params.uId == this.userInfo.uId) {
+
+            this.$router.push('/navbar/user')
+
+          } else {
+
+            this.isUserAttention();
+
+            let res = await getUserAllData(this.$route.params.uId)
+
+
+            // console.log(res);
+
+            var results = JSON.parse(res.results)[0];
+
+            this.form.nickname = results.userName;
+            if (results.userLocal) {
+              this.selectedOptions = JSON.parse(results.userLocal);
+            }
+            this.form.sex = results.userSex;
+            this.form.intro = results.userStatement;
+            this.avatarSrc = this.imgBaseUrl + results.userAvatar + ``
+            this.form.class = results.userRegDate
+          }
         } else {
-          // 查询当前用户是否关注此用户
-          this.isUserAttention();
-
           let res = await getUserAllData(this.$route.params.uId)
 
 
@@ -114,7 +135,7 @@
           var results = JSON.parse(res.results)[0];
 
           this.form.nickname = results.userName;
-          if (results.userLocal){
+          if (results.userLocal) {
             this.selectedOptions = JSON.parse(results.userLocal);
           }
           this.form.sex = results.userSex;
@@ -122,6 +143,8 @@
           this.avatarSrc = this.imgBaseUrl + results.userAvatar + ``
           this.form.class = results.userRegDate
         }
+
+
       },
       // 关注，取消关注
       async attention() {

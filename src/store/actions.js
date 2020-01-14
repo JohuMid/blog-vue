@@ -17,6 +17,8 @@ export default {
     // 从本地获取数据
     let userInfo = JSON.parse(getStore('userInfo'))
     if (userInfo) {
+      console.log(userInfo);
+
       commit(USER_INFO, {userInfo});
     } else {
       // 服务器端验证

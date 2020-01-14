@@ -9,12 +9,7 @@ import ajax from "./ajax";
 // lk001 - lk006
 
 // 1. 定义基础路径
-const BASE_URL = 'http://localhost:3000';
-
 const LOCAL_BASE_URL = '/api'
-
-// 获取首页文章信息
-// export const getHomeData = () => ajax(LOCAL_BASE_URL + '/homedata',{});
 
 /**
  * 前台操作
@@ -71,6 +66,8 @@ export const getBannerTopic = () => ajax(LOCAL_BASE_URL + '/bannertopic');
 export const getTopicList = (page) => ajax(LOCAL_BASE_URL + '/topiclist', {page});
 // 获取全部文章信息
 export const getAllTopicList = () => ajax(LOCAL_BASE_URL + '/alltopiclist');
+// 获取全部用户信息
+export const getAllUserList = () => ajax(LOCAL_BASE_URL + '/alluserlist');
 
 
 // 获取用户详细信息
@@ -161,6 +158,7 @@ export const getChatsData = (tId, pageNum, currentPage) => ajax(LOCAL_BASE_URL +
 export const deleteChat = (rId) => ajax(LOCAL_BASE_URL + '/delchat', {rId});
 // 删除文章
 export const deleteTopic = (tId) => ajax(LOCAL_BASE_URL + '/deltopic', {tId});
+
 
 
 
