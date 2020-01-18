@@ -189,7 +189,9 @@ export default {
     },
     // 判断当前文章是否被当前用户收藏
     async isUserStar() {
-      if (this.userInfo) {
+
+      console.log(this.userInfo.uId);
+      if (this.userInfo.uId) {
         let res = await userIsStar(this.userInfo.uId, this.$route.params.tId);
 
         if (res.err_code === 0) {

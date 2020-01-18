@@ -7,3 +7,8 @@ import ajax from "./ajax";
 const ANALYSIS_BASE_URL = '/analysis';
 
 export const totalNum = () => ajax(ANALYSIS_BASE_URL + '/totalnum');
+
+export const userAction = (type) => ajax(ANALYSIS_BASE_URL + '/useraction',{type});
+
+export const getAllUserAnalysis = () => ajax(ANALYSIS_BASE_URL + '/alluseranalysis');
+

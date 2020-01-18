@@ -180,8 +180,6 @@
       // 搜索内容
       searchList() {
 
-        console.log();
-
         if (!(this.searchInput.trim())) {
           Message('请输入内容后搜索!');
         } else {

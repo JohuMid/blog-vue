@@ -47,7 +47,7 @@
                                     </div>
                                 </el-col>
 
-                                <el-col v-if="!item.tHeadImage">
+                                <el-col v-if="!item.tHeadImage||item.tHeadImage=='undefined'">
 
                                 </el-col>
                                 <el-col :span="4" v-else>
@@ -138,7 +138,7 @@
         // 文章简要信息
         var results = JSON.parse(res.results)
 
-        // console.log(results);
+        console.log(results);
 
         this.topicList = this.topicList.concat(results);
 

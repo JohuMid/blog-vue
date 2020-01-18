@@ -69,7 +69,7 @@
         } else {
           let res = await publishTopic(this.userInfo.uId, this.form.userTheme, Base64.encode(this.content))
 
-          console.log(this.content);
+          // console.log(this.content);
 
           if (res.err_code === 0) {
             Message({

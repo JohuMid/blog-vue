@@ -89,9 +89,11 @@
 
         <!--            弹出框文章详情-->
         <el-dialog title="文章详情" :visible.sync="dialogFormVisible">
-            <div class="words" v-html="tContents">
-
-            </div>
+                <div class="ql-container ql-snow">
+                    <div class="ql-editor" v-html="tContents" v-highlight>
+                        <!--                                            正文开始-->
+                    </div>
+                </div>
 
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>

@@ -44,7 +44,10 @@
                                 <el-menu-item index="1-1">用户管理</el-menu-item>
                             </router-link>
                             <router-link to="/backstage/useranalysis">
-                                <el-menu-item index="1-2">用户分析</el-menu-item>
+                                <el-menu-item index="1-2">用户数据分析</el-menu-item>
+                            </router-link>
+                            <router-link to="/backstage/useraction">
+                                <el-menu-item index="1-3">用户行为分析</el-menu-item>
                             </router-link>
 
                         </el-menu-item-group>

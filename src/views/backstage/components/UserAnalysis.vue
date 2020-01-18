@@ -331,9 +331,8 @@
         if (res.err_code === 0) {
           let res1 = (res.results1)
 
-
           this.sexData.female = res1[0].female
-          this.sexData.male = res1[1].female
+          this.sexData.male = res1[0].male
 
           /*console.log(this.sexData.female);
           console.log(this.sexData.male);*/

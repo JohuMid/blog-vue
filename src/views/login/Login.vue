@@ -50,7 +50,6 @@
   import {mapActions} from 'vuex'
   import 'element-ui/lib/theme-chalk/display.css';
 
-
   export default {
     name: "Login",
     data() {
