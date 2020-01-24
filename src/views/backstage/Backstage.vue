@@ -54,16 +54,41 @@
                     </el-submenu>
 
 
-                    <router-link to="/backstage/articlemanage">
-
-                        <el-menu-item index="2">
+                    <el-submenu index="2">
+                        <template slot="title">
                             <i class="el-icon-tickets"></i>
-                            <span slot="title">文章管理</span>
-                        </el-menu-item>
-                    </router-link>
-                    <router-link to="/backstage/chatmanage">
+                            <span>文章管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">文章</template>
+                            <router-link to="/backstage/articlemanage">
+                                <el-menu-item index="2-1">文章管理</el-menu-item>
+                            </router-link>
+                            <router-link to="/backstage/articleanalysis">
+                                <el-menu-item index="2-2">文章数据分析</el-menu-item>
+                            </router-link>
+                            <router-link to="/backstage/articleaction">
+                                <el-menu-item index="2-3">文章价值分析</el-menu-item>
+                            </router-link>
 
-                        <el-menu-item index="3">
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <i class="el-icon-notebook-1"></i>
+                            <span>专题管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">专题</template>
+                            <router-link to="/backstage/specialmanage">
+                                <el-menu-item index="3-1">专题管理</el-menu-item>
+                            </router-link>
+                        </el-menu-item-group>
+                    </el-submenu>
+
+                    <router-link to="/backstage/chatmanage">
+                        <el-menu-item index="4">
                             <i class="el-icon-chat-square"></i>
                             <span slot="title">评论管理</span>
                         </el-menu-item>

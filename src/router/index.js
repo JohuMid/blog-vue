@@ -20,6 +20,8 @@ import EditPublish from "../views/publish/EditPublish";
 import Article from "../views/home/components/Article";
 // 搜索界面
 import Search from "../views/home/components/Search";
+// 标签页
+import tagPage from "../views/home/components/tagPage";
 
 // 用户分析
 import UserAnalysis from "../views/backstage/components/UserAnalysis";
@@ -32,6 +34,13 @@ import ArticleManage from "../views/backstage/components/ArticleManage";
 import ChatManage from "../views/backstage/components/ChatManage";
 import UserArticle from "../views/user/components/UserArticle";
 import UserManage from "../views/backstage/components/UserManage";
+
+// 文章分析
+import ArticleAnalysis from "../views/backstage/components/ArticleAnalysis";
+import ArticleAction from "../views/backstage/components/ArticleAction";
+
+// 专题分析
+import SpecialManage from "../views/backstage/components/SpecialManage";
 
 Vue.use(VueRouter)
 
@@ -51,6 +60,7 @@ export default new VueRouter({
         {path: 'editpublish/:tId', name: 'editpublish', component: EditPublish},
         {path: 'publish', name: 'publish', component: Publish},
         {path: 'search/:searchInput', name: 'search', component: Search},
+        {path: 'tagpage/:tag', name: 'tagpage', component: tagPage},
       ]
     },
     {path: '/login', name: 'login', component: Login},
@@ -69,6 +79,10 @@ export default new VueRouter({
         {path: 'useraction', name: 'useraction', component: UserAction,},
         {path: 'articlemanage/:uId', name: 'articlemanage', component: ArticleManage},
         {path: 'articlemanage', name: 'articlemanage', component: ArticleManage},
+
+        {path: 'articleanalysis', name: 'articleanalysis', component: ArticleAnalysis,},
+        {path: 'articleaction', name: 'articleaction', component: ArticleAction,},
+        {path: 'specialmanage', name: 'specialmanage', component: SpecialManage},
         {path: 'chatmanage/:tId', name: 'chatmanage', component: ChatManage},
         {path: 'chatmanage', name: 'chatmanage', component: ChatManage},
       ]

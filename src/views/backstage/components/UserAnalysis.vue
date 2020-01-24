@@ -98,7 +98,7 @@
     created() {
       this.init();
     },
-    mounted() {
+    mounted()   {
 
       this.sexOptions = {
         tooltip: {

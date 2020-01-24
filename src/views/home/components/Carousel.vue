@@ -4,14 +4,11 @@
         <el-row :gutter="20">
             <el-col :span="12" :offset="4">
 
-                <div class="theme" >
-                    收藏量Top3文章集锦
-                </div>
                 <div>
-                    <el-carousel trigger="click" height="200px">
+                    <el-carousel trigger="click" height="250px" style="border-radius: 10px">
                         <el-carousel-item v-for="(item ,index) in collectPlaceImgUrl" :key="item.src">
                             <div style="width: 100%;height: 100%;"
-                                 :style="{ 'background-image': 'url(' +item.tHeadImage + ')','background-size':'100%','background-position':'center','filter': 'blur(5px)' }">
+                                 :style="{ 'background-image': 'url(' +item.tHeadImage + ')','background-size':'100%','background-position':'center' }">
 
                             </div>
                             <router-link
@@ -23,28 +20,25 @@
                     </el-carousel>
                 </div>
             </el-col>
-            <el-col :span="4" :offset="16" style="position: absolute;width: 280px;" >
-                <div class="theme">
-                    评论量Top3文章集锦
-                </div>
-                <div >
-                    <el-carousel trigger="click" height="200px">
-                        <el-carousel-item v-for="(item ,index) in chatPlaceImgUrl" :key="item.src">
-                            <div style="width: 100%;height: 100%;"
-                                 :style="{ 'background-image': 'url(' + item.tHeadImage + ')','background-repeat':'no-repeat','background-size':'cover','background-position':'center','filter': 'blur(5px)' }">
-                            </div>
-
-                            <router-link
-                                    :to="`/navbar/article/`+item.tId+``">
-                                <h3 class="chatbannerTitle text-shadow">{{item.tTopic}}</h3>
-
-                            </router-link>
-
-                        </el-carousel-item>
-                    </el-carousel>
+            <el-col :span="4" :offset="16" style="position: absolute;width: 280px;">
+                <div>
+                    <router-link
+                    to=""
+                    >
+                        <el-card class="box-card" style="background: #409eff">推荐栏目<span> </span><img style="width: 50px;position: absolute;right: 20px;top: 5px;" src="./../../../assets/tag.png" alt=""></el-card>
+                    </router-link>
+                    <router-link
+                            to=""
+                    >
+                    <el-card class="box-card" style="background: #63c2f4">推荐作者<span> </span><img style="width: 50px;position: absolute;right: 20px;top: 75px;" src="./../../../assets/user.png" alt=""></el-card>
+                    </router-link>
+                    <router-link
+                            to=""
+                    >
+                    <el-card class="box-card" style="background: #c1e4de">推荐文章<span> </span><img style="width: 50px;position: absolute;right: 20px;top: 150px;" src="./../../../assets/topic.png" alt=""></el-card>
+                    </router-link>
                 </div>
             </el-col>
-
         </el-row>
     </div>
 </template>
@@ -68,11 +62,8 @@
       async bannerTopic() {
         let res = await getBannerTopic()
         if (res.err_code === 0) {
-          let  res1 = JSON.parse(res.results1)
+          let res1 = JSON.parse(res.results1)
           let res2 = JSON.parse(res.results2)
-
-          // console.log(res2);
-
 
           this.collectPlaceImgUrl = res1
           this.chatPlaceImgUrl = res2
@@ -87,12 +78,6 @@
     img {
         width: 100%;
     }
-    .theme{
-        padding: 8px 16px;
-        border-left: 5px solid #409eff;
-        margin: 20px 0;
-        font-weight: bold;
-    }
 
     .bannerTitle {
         font-size: 30px;
@@ -103,7 +88,8 @@
         z-index: 99;
         position: absolute;
     }
-    .chatbannerTitle{
+
+    .chatbannerTitle {
         font-size: 25px;
         font-weight: bolder;
         color: white;
@@ -112,6 +98,11 @@
         z-index: 99;
         position: absolute;
 
+    }
+
+    .box-card {
+        margin-bottom: 10px;
+        color: white;
     }
 
 

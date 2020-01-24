@@ -44,10 +44,11 @@ export const getUserData = () => ajax(LOCAL_BASE_URL + '/reqdata', {});
 // 退出登录
 export const getLogOut = () => ajax(LOCAL_BASE_URL + '/logout', {});
 // 发布文章
-export const publishTopic = (uId, userTheme, userTopic) => ajax(LOCAL_BASE_URL + '/publish', {
+export const publishTopic = (uId, userTheme, userTopic, tModel) => ajax(LOCAL_BASE_URL + '/publish', {
   uId,
   userTheme,
-  userTopic
+  userTopic,
+  tModel
 }, 'POST');
 // 上传文章中包含的图片
 export const uploadTopicImg = (uId, data) => ajax(LOCAL_BASE_URL + '/uplodtopicimg', {uId, data}, 'POST');
@@ -135,6 +136,8 @@ export const userCancelAttention = (uId, usersId) => ajax(LOCAL_BASE_URL + '/can
 export const userIsStar = (uId, topicIndex) => ajax(LOCAL_BASE_URL + '/isuserstar', {uId, topicIndex});
 // 是否关注
 export const userIsAttention = (uId, usersId) => ajax(LOCAL_BASE_URL + '/isuserattention', {uId, usersId});
+// 获取标签页
+export const tagTopic = (tag, page) => ajax(LOCAL_BASE_URL + '/tagtopic', {tag, page});
 
 /**
  * 后台操作
@@ -158,8 +161,12 @@ export const getChatsData = (tId, pageNum, currentPage) => ajax(LOCAL_BASE_URL +
 export const deleteChat = (rId) => ajax(LOCAL_BASE_URL + '/delchat', {rId});
 // 删除文章
 export const deleteTopic = (tId) => ajax(LOCAL_BASE_URL + '/deltopic', {tId});
-
-
+// 专题管理
+export const getSpecialTopic = (tag, pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/getspecialtopic', {
+  tag,
+  pageNum,
+  currentPage
+},'POST');
 
 
 

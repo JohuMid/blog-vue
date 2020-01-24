@@ -3,34 +3,38 @@
         <ul class="media-list">
             <li v-for="(item , id) in collectList" :key="id">
                 <el-row>
-                    <el-col :span="4" style="text-align: center;width: 80px;">
-                        <div class="grid-content ">
-                            <router-link
-                                    class="users"
-                                    :to="`/navbar/users/`+item.uId+``"
-                            >
-                                <el-avatar shape="square" :size="50"
-                                           :src="imgBaseUrl+item.userAvatar"
-                                           alt="..."></el-avatar>
-                            </router-link>
-                        </div>
-                    </el-col>
-                    <el-col :span="20">
-                        <div class="grid-content">
-                            <el-link type="primary">
-                                <router-link tag="h2"
-                                             :to="`/navbar/article/`+item.tId+``"
-                                >
-                                    {{item.tTopic}}
-                                </router-link>
-                            </el-link>
-                            <p class="footnote">
-                                <span>{{item.userName}}</span>
-                                • 发布了文章 •
-                                <span>{{item.tTime | timeFormatSimple()}}</span>
-                            </p>
-                        </div>
-                    </el-col>
+                        <el-col :span="22">
+                            <div class="grid-content">
+                                <p class="title">
+                                    <el-link type="primary">
+                                        <router-link
+                                                tag="h2"
+                                                style="font-weight: 700"
+
+                                                :to="`/navbar/article/`+item.tId+``"
+                                                class="media-heading">{{item.tTopic}}
+                                        </router-link>
+                                    </el-link>
+                                </p>
+                                <p class="summary">
+                                    {{item.tWords+'...'}}
+                                </p>
+                                <p class="footnote">
+                                    <el-avatar :size="25"
+                                               :src="imgBaseUrl+item.userAvatar"
+                                               alt="...">
+                                    </el-avatar>
+                                    <router-link
+                                            class="users"
+                                            :to="`/navbar/users/`+item.uId+``">
+                                        <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
+                                    </router-link>
+                                    发布
+                                    <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                </p>
+                            </div>
+                        </el-col>
+
                 </el-row>
                 <el-divider></el-divider>
 

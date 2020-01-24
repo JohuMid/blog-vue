@@ -29,9 +29,8 @@
 
 <script>
   import VueEditor from "../../components/VueEditor";
-  import {publishTopic, updateTopic} from "../../service/api";
+  import {updateTopic} from "../../service/api";
   import {Message} from 'element-ui';
-  import {Base64} from 'js-base64'
   import {mapState} from 'vuex'
 
 
@@ -70,8 +69,8 @@
           Message('请填写文章正文!');
         } else {
 
-          console.log(this.form.userTheme);
-          let res = await updateTopic(this.$route.params.tId, this.form.userTheme, Base64.encode(this.content))
+          console.log((this.content))
+          let res = await updateTopic(this.$route.params.tId, this.form.userTheme, (this.content))
 
           if (res.err_code === 0) {
             Message({

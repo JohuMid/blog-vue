@@ -40,10 +40,10 @@
 
   // 导入富文本编辑器配置文件
   import './../plugins/vueeditor'
-  import {Base64} from "js-base64";
   import {Message} from "element-ui";
   import {mapState} from "vuex";
   import {uploadTopicImg} from "../service/api";
+  import base64 from 'js-base64'
 
 
   export default {
@@ -93,7 +93,7 @@
             this.tTopic = res.tTopic
             this.$emit('func1', this.tTopic)
 
-            this.content = Base64.decode(res.tContents)
+            this.content = (res.tContents)
           }
         } else {
 

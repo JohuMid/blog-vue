@@ -12,3 +12,6 @@ export const userAction = (type) => ajax(ANALYSIS_BASE_URL + '/useraction',{type
 
 export const getAllUserAnalysis = () => ajax(ANALYSIS_BASE_URL + '/alluseranalysis');
 
+export const totalTopic = () => ajax(ANALYSIS_BASE_URL + '/totaltopic');
+
+

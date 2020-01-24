@@ -6,58 +6,83 @@
 
         <ul class="media-list">
             <el-row :gutter="20">
-                <el-col :span="12" :offset="4" >
+                <el-col :span="12" :offset="4">
                     <div class="theme">
                         最新文章
                     </div>
                     <div>
                         <li v-for="(item , index) in topicList" :key="item.tId">
                             <el-row>
-                                <el-col :span="4" style="text-align: center;width: 80px;">
-                                    <div class="grid-content ">
-                                        <router-link
-                                                class="users"
-                                                :to="`/navbar/users/`+item.uId+``">
-                                            <el-avatar shape="square" :size="50"
-                                                       :src="imgBaseUrl+item.userAvatar"
-                                                       alt="...">
-                                            </el-avatar>
-                                        </router-link>
-                                    </div>
-                                </el-col>
-                                <el-col :span="14">
-                                    <div class="grid-content">
-                                        <p class="title">
-                                            <el-link type="primary">
-                                                <router-link
-                                                        tag="h2"
-                                                        :to="`/navbar/article/`+item.tId+``"
-                                                        class="media-heading">{{item.tTopic}}
-                                                </router-link>
-                                            </el-link>
-                                        </p>
-                                        <p class="summary">
-                                            {{item.tWords+'...'}}
-                                        </p>
-                                        <p class="footnote">
-                                            <span>{{item.userName}}</span>
-                                            发布了文章
-                                            <span>{{item.tTime | timeFormatSimple}}</span>
-                                        </p>
-                                    </div>
-                                </el-col>
-
                                 <el-col v-if="!item.tHeadImage||item.tHeadImage=='undefined'">
+                                    <el-col :span="24">
+                                        <div class="grid-content">
+                                            <p class="title">
+                                                <el-link type="primary">
+                                                    <router-link
+                                                            tag="h2"
+                                                            style="font-weight: 700"
 
+                                                            :to="`/navbar/article/`+item.tId+``"
+                                                            class="media-heading">{{item.tTopic}}
+                                                    </router-link>
+                                                </el-link>
+                                            </p>
+                                            <p class="summary">
+                                                {{item.tWords+'...'}}
+                                            </p>
+                                            <p class="footnote">
+                                                <el-avatar :size="25"
+                                                           :src="imgBaseUrl+item.userAvatar"
+                                                           alt="...">
+                                                </el-avatar>
+                                                <router-link
+                                                        class="users"
+                                                        :to="`/navbar/users/`+item.uId+``">
+                                                    <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
+                                                </router-link>
+                                                发布
+                                                <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                            </p>
+                                        </div>
+                                    </el-col>
                                 </el-col>
-                                <el-col :span="4" v-else>
-
-                                    <div class="block">
+                                <el-col v-else>
+                                    <el-col :span="20">
+                                        <div class="grid-content">
+                                            <p class="title">
+                                                <el-link type="primary">
+                                                    <router-link
+                                                            tag="h2"
+                                                            style="font-weight: 600"
+                                                            :to="`/navbar/article/`+item.tId+``"
+                                                            class="media-heading">{{item.tTopic}}
+                                                    </router-link>
+                                                </el-link>
+                                            </p>
+                                            <p class="summary">
+                                                {{item.tWords+'...'}}
+                                            </p>
+                                            <p class="footnote">
+                                                <el-avatar :size="25"
+                                                           :src="imgBaseUrl+item.userAvatar"
+                                                           alt="...">
+                                                </el-avatar>
+                                                <router-link
+                                                        class="users"
+                                                        :to="`/navbar/users/`+item.uId+``">
+                                                    <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
+                                                </router-link>
+                                                发布
+                                                <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                            </p>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="4" class="block">
                                         <el-image
                                                 style="width: 150px; height: 90px;border-radius: 5px"
                                                 :src="item.tHeadImage"
                                                 :fit="fits[0]"></el-image>
-                                    </div>
+                                    </el-col>
 
                                 </el-col>
                             </el-row>
@@ -74,9 +99,9 @@
                         </div>
                     </div>
                 </el-col>
-                <!--<el-col :span="4" :offset="16" style="position: absolute;width: 280px;height: 300px;background: #000;" >
+                <el-col :span="4" :offset="16" style="position: absolute;width: 280px;height: 300px;background: #000;" >
 
-                </el-col>-->
+                </el-col>
             </el-row>
         </ul>
 
@@ -138,8 +163,6 @@
         // 文章简要信息
         var results = JSON.parse(res.results)
 
-        console.log(results);
-
         this.topicList = this.topicList.concat(results);
 
         if (Number(this.topicList.length) === this.total) {
@@ -180,12 +203,6 @@
         line-height: 1.5;
     }
 
-    .footnote {
-        line-height: 24px;
-        color: #3d3d3d;
-        font-size: 14px;
-    }
-
     .loading {
         text-align: center;
         font-size: 20px;
@@ -200,10 +217,9 @@
         font-weight: bold;
     }
 
-    .summary {
-        font-size: 15px;
-        line-height: 26px;
-        color: #999;
+    .el-divider{
+        min-width: 500px;
     }
+
 
 </style>

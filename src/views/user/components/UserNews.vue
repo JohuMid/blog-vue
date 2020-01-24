@@ -83,7 +83,7 @@
           // 文章总数
           var num = JSON.parse(res.num)
 
-          console.log(results);
+          // console.log(results);
 
           this.newsList = results;
           this.total = num[0]['COUNT(*)']
@@ -92,7 +92,6 @@
           } else {
             this.isShow = false
           }
-
         }
       },
 
