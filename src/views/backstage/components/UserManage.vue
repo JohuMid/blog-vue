@@ -98,9 +98,7 @@
       async reqUsersData() {
         let res = await getUsersData(this.pageNum, this.currentPage)
 
-        var results = JSON.parse(res.results)
-
-        this.tableData = results
+        this.tableData = JSON.parse(res.results)
 
         var num = JSON.parse(res.num)
 

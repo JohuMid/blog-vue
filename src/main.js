@@ -67,6 +67,10 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
 Vue.component('chart', ECharts)
 
+// 词云图
+import 'echarts'
+import 'echarts-wordcloud'
+
 new Vue({
   router,
   store,

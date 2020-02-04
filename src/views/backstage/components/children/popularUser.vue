@@ -64,7 +64,7 @@
 </template>
 
 <script>
-  import {getAllUserAnalysis, userAction} from "../../../../service/api/analysis";
+  import {userAction} from "../../../../service/api/analysis";
 
   export default {
     name: "popularUser",
@@ -82,21 +82,9 @@
     methods: {
       async init() {
         let res = await userAction('popular')
-
-        let res1 = await getAllUserAnalysis()
-
-        res1 = (JSON.parse(res1.results));
-        res = (res.results);
-
-        var list = [];
-        for (let j = 0; j < res1.length; j++) {
-          for (let i = 0; i < res.length; i++) {
-            if (res1[j].uId === res[i]) {
-              list.push(res1[j])
-            }
-          }
+        if(res.err_code===0){
+          this.tableData = (res.results);
         }
-        this.tableData = (list);
 
       },
     }

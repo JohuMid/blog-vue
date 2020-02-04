@@ -1,17 +1,17 @@
 <template>
-    <div id="articlemanage">
+    <div id="valuearticle">
         <div class="tableborder">
             <template>
                 <el-table
-                        height="90%"
+                        height="680px"
                         stripe
-                        :data="tableData.filter(data => !search || data.userName.toLowerCase().includes(search.toLowerCase()))"
+                        :data="tableData.filter(data => !search || data.tTopic.toLowerCase().includes(search.toLowerCase()))"
                         style="width: 100%">
                     <el-table-column
                             prop="tId"
                             label="文章ID"
                             sortable
-                            width="120">
+                            width="180">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
@@ -26,7 +26,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="tModel"
-                            width="100"
+                            width="180"
                             label="文章标签">
                     </el-table-column>
                     <el-table-column
@@ -38,7 +38,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            width="100"
+                            width="200"
                             label="属性">
                         <template slot-scope="scope">
                             <router-link
@@ -58,27 +58,9 @@
                             </el-button>
                         </template>
                     </el-table-column>
-
-                    <el-table-column
-                            prop="tRecommend"
-                            width="150"
-                            label="推荐值">
-                        <template slot-scope="scope">
-                            <div class="block">
-                                <el-rate
-                                        v-model="scope.row.tRecommend"
-                                        :colors="colors"
-                                        @change="change(scope.row.tRecommend,scope.row)"
-
-                                >
-                                </el-rate>
-                            </div>
-
-                        </template>
-                    </el-table-column>
-
                     <el-table-column
                             fixed="right">
+
                         <template slot="header" slot-scope="scope">
                             <el-input
                                     v-model="search"
@@ -97,18 +79,6 @@
                 </el-table>
             </template>
         </div>
-
-        <div class="pagination">
-            <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[50,100,200,300]"
-                    :page-size="5"
-                    layout="total, sizes, prev, pager, next"
-                    :total="total">
-            </el-pagination>
-        </div>
-
         <!--            弹出框文章详情-->
         <el-dialog title="文章详情" :visible.sync="dialogFormVisible">
             <div class="ql-container ql-snow">
@@ -125,62 +95,33 @@
 </template>
 
 <script>
-  import {getTopicsData, getTopicDetail, deleteTopic, rate} from "../../../service/api";
-
+  import {topicAction} from "../../../../service/api/analysis";
+  import {deleteTopic, getTopicDetail} from "../../../../service/api";
 
   export default {
-    name: "ArticleManage",
+    name: "valueArticle",
     data() {
       return {
         tableData: [],
-        // 总条数
-        total: 0,
-        // 每页条数
-        pageNum: 50,
-        // 当前页面
-        currentPage: 1,
         // 弹出框显示隐藏
         dialogFormVisible: false,
-        //  文章tId
-        tId: 0,
+        // 总条数
+        total: 0,
+        search: '',
         //  文章详情
         tContents: '',
-        search: '',
-        //  评分属性
-        value2: null,
-        colors: { 2: '#f2d3a3', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
       }
     },
     created() {
-      this.reqTopicsData()
-    },
-    watch: {
-      // 监听路由改变刷新页面
-      $route(to, from) {
-        this.reqTopicsData()
-      }
+      this.init()
     },
     methods: {
-      async reqTopicsData() {
+      async init() {
+        let res = await topicAction('value')
 
-        let res = await getTopicsData(this.$route.params.uId, this.pageNum, this.currentPage)
-
-        // console.log(res.results);
-
-        this.tableData = JSON.parse(res.results)
-
-        var num = JSON.parse(res.num)
-
-        this.total = num[0]['COUNT(*)']
-
-      },
-      handleSizeChange(val) {
-        this.pageNum = Number(`${val}`);
-        this.reqTopicsData()
-      },
-      handleCurrentChange(val) {
-        this.currentPage = Number(`${val}`);
-        this.reqTopicsData()
+        if (res.err_code === 0) {
+          this.tableData = (res.results);
+        }
       },
       async dialog(index, row) {
         this.dialogFormVisible = true
@@ -209,42 +150,13 @@
         }).catch(() => {
           console.log('啥都没做')
         });
-      },
-      async change(value, row) {
 
-        let res = await rate(row.tId, value);
-        if (res.err_code === 0) {
-
-        }
       }
     }
+
   }
 </script>
 
 <style scoped>
-    #articlemanage {
-        width: 100%;
-        height: 100%;
-    }
-
-    .tableborder {
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-
-    }
-
-    .pagination {
-        position: absolute;
-        bottom: 20px;
-    }
-
-    .detail {
-        margin-left: 10px;
-    }
-
-    .words {
-        line-height: 26px;
-    }
 
 </style>

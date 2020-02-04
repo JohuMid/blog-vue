@@ -23,7 +23,9 @@
                                                             style="font-weight: 700"
 
                                                             :to="`/navbar/article/`+item.tId+``"
-                                                            class="media-heading">{{item.tTopic}}
+                                                            class="media-heading">
+                                                        <i v-if="Number(item.tRecommend)!==0" class="el-icon-star-on"
+                                                           style="color: #409eff"></i>{{item.tTopic}}
                                                     </router-link>
                                                 </el-link>
                                             </p>
@@ -55,7 +57,10 @@
                                                             tag="h2"
                                                             style="font-weight: 600"
                                                             :to="`/navbar/article/`+item.tId+``"
-                                                            class="media-heading">{{item.tTopic}}
+                                                            class="media-heading">
+                                                        <i v-if="Number(item.tRecommend)!==0" class="el-icon-star-on"
+                                                           style="color: #409eff"></i>
+                                                        {{item.tTopic}}
                                                     </router-link>
                                                 </el-link>
                                             </p>
@@ -99,7 +104,7 @@
                         </div>
                     </div>
                 </el-col>
-                <el-col :span="4" :offset="16" style="position: absolute;width: 280px;height: 300px;background: #000;" >
+                <el-col :span="4" :offset="16" style="position: absolute;width: 280px;height: 300px;">
 
                 </el-col>
             </el-row>
@@ -146,7 +151,6 @@
     },
     methods: {
       async getList() {
-
         let res = await getTopicList(this.page);
 
         // console.log(res);
@@ -217,7 +221,7 @@
         font-weight: bold;
     }
 
-    .el-divider{
+    .el-divider {
         min-width: 500px;
     }
 

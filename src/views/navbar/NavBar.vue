@@ -49,16 +49,51 @@
                                 你暂时还没有消息
                             </el-dropdown-item>
                             <el-dropdown-item class="clearfix" v-for="(item,index) in aboutList" :key="item.sId">
-                                你的文章
-                                <router-link :to="'/navbar/article/'+item.tId">
-                                    《{{item.tTopic}}》
-                                </router-link>
-                                被
-                                <router-link :to="'/navbar/users/'+item.uId">
-                                    {{item.userName}}
-                                </router-link>
-                                {{item.type|aboutWord}}
-                                了
+                                <div v-if="item.type=='star'">
+                                    你的文章
+                                    <router-link :to="'/navbar/article/'+item.tId">
+                                        《{{item.tTopic}}》
+                                    </router-link>
+                                    被
+                                    <router-link :to="'/navbar/users/'+item.uId">
+                                        {{item.userName}}
+                                    </router-link>
+                                    {{item.type|aboutWord}}
+                                    了
+                                </div>
+                                <div v-else-if="item.type=='chat'">
+                                    你的文章
+                                    <router-link :to="'/navbar/article/'+item.tId">
+                                        《{{item.tTopic}}》
+                                    </router-link>
+                                    被
+                                    <router-link :to="'/navbar/users/'+item.uId">
+                                        {{item.userName}}
+                                    </router-link>
+                                    {{item.type|aboutWord}}
+                                    了
+                                </div>
+                                <div v-else-if="item.type=='like'">
+                                    你被
+                                    <router-link :to="'/navbar/users/'+item.uId">
+                                        {{item.userName}}
+                                    </router-link>
+                                    {{item.type|aboutWord}}
+                                    了
+                                </div>
+                                <div v-else-if="item.type=='reply'">
+                                    你在文章
+                                    <router-link :to="'/navbar/article/'+item.tId">
+                                        《{{item.tTopic}}》
+                                    </router-link>
+                                    的评论被
+                                    <router-link :to="'/navbar/users/'+item.uId">
+                                        {{item.userName}}
+                                    </router-link>
+                                    {{item.type|aboutWord}}
+                                    了
+                                </div>
+
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -125,7 +160,6 @@
       return {
         loading: 1,
         show: 0,
-        avatarSrc: '',
         // 消息条目
         aboutList: [],
         // 消息条数
@@ -137,13 +171,12 @@
       };
     },
     created() {
-
+      this.createModel()
     },
     mounted() {
       // 自动登录
       this.reqUserInfo()
-      // 没登录时候填充头像避免error
-      this.isUserInfo()
+
       if (this.userInfo) {
         this.$socket.emit('online', this.userInfo.uId)
       }
@@ -169,14 +202,22 @@
           this.reload();
         }
       },
+      // 如果登录，创建模型
+      createModel() {
+        if (this.userInfo) {
+          if (this.userInfo.token) {
+            localStorage.model = '[{"娱乐":0,"汽车":0,"职场":0,"科技":0,"房产":0,"生活":0,"互联网":0,"创投":0,"游戏":0,"人物":0,"评测":0,"电影":0,"计算机":0,"体育":0,"智能":0,"综合":0}]';
+          }
+        }
+      },
 
-      isUserInfo() {
+      /*isUserInfo() {
         if (!this.userInfo.token) {
           this.avatarSrc = '123'
         } else {
           // console.log(22222222);
         }
-      },
+      },*/
       // 搜索内容
       searchList() {
 
@@ -184,10 +225,10 @@
           Message('请输入内容后搜索!');
         } else {
           this.$router.push('/navbar/search/' + this.searchInput)
-          this.searchInput=''
+          this.searchInput = ''
         }
       },
-
+      // 避免页面闪烁
       getMsgFormSon(data) {
         if (data === '我好了') {
           this.loading = 0

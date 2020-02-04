@@ -132,6 +132,11 @@ import {Timeline,TimelineItem} from 'element-ui'
 
 Vue.use(Timeline).use(TimelineItem)
 
+// 引入评分组件
+import {Rate} from "element-ui";
+
+Vue.use(Rate)
+
 
 import {Message, MessageBox} from "element-ui";
 

@@ -80,6 +80,8 @@ Vue.filter('aboutWord', (value) => {
     return '评论'
   } else if (value == 'like') {
     return '关注'
+  } else if (value == 'reply') {
+    return '回复'
   }
 })
 

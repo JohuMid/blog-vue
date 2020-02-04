@@ -39,7 +39,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="" name="forth" :key="'forth'">
                     <span slot="label">
-                        <el-tooltip class="item" effect="light" content="通过userLoginNum,userRegDate数据分析" placement="top-start">
+                        <el-tooltip class="item" effect="light" content="通过userCollectNum,userTopicNum,userAttentionNum,userLoginNum,userRegDate数据分析" placement="top-start">
                             <i class="el-icon-pear">可激励用户</i>
                         </el-tooltip>
                     </span>

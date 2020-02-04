@@ -2,15 +2,16 @@
     <div id="article">
         <div>
             <el-row :gutter="20">
-                <el-col :span="16" :offset="4">
-                    <div class="grid-content list-shadow word">
+                <el-col :span="12" :offset="4">
+                    <div class="grid-content list-shadow word"
+                         :style="bgStyle[tRecommend-1]">
                         <el-row :gutter="20">
-                            <el-col :span="22" :offset="1">
+                            <el-col :offset="1">
                                 <el-row>
-                                    <el-col :span="18">
+                                    <el-col :span="23">
                                         <div class="grid-content">
                                             <h1 v-cloak>{{topic}}</h1>
-                                            <p v-cloak>
+                                            <p v-cloak style="font-size: 14px; line-height: 22px;">
                                                 {{time|timeFormatSimple}}
                                                 <span style="margin-left: 10px;margin-right: 10px;">发布</span>
                                                 <el-tag
@@ -21,27 +22,6 @@
                                                     {{tag}}
                                                 </el-tag>
                                             </p>
-
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <div class="grid-content">
-                                            <el-row>
-                                                <el-col :span="12" style="width: 80px;">
-                                                    <div class="grid-content">
-                                                        <el-avatar :size="70" :src="avatarSrc"
-                                                                   shape="square"></el-avatar>
-                                                    </div>
-                                                </el-col>
-                                                <el-col :span="12">
-                                                    <div class="grid-content">
-                                                        <h3>作者：</h3>
-                                                        <router-link :to="`/navbar/users/`+this.uId+``">
-                                                            <p v-cloak>{{userName}}</p>
-                                                        </router-link>
-                                                    </div>
-                                                </el-col>
-                                            </el-row>
                                         </div>
                                     </el-col>
                                 </el-row>
@@ -53,7 +33,7 @@
                                 <el-col :span="22" :offset="1">
                                     <div class="ql-container ql-snow">
                                         <div class="ql-editor" v-html="contents" v-highlight>
-                                            <!--                                            正文开始-->
+                                            <!--正文开始-->
                                         </div>
                                     </div>
                                 </el-col>
@@ -95,6 +75,45 @@
                         </ul>
                     </div>
                 </el-col>
+                <el-col :span="4" :offset="0">
+                    <div class="grid-content list-shadow word">
+                        <el-row :gutter="20">
+                            <el-col :span="12" style="width: 50px;text-align: center;margin-left: 20px;">
+                                <div class="grid-content">
+                                    <el-avatar :size="40" :src="avatarSrc"
+                                               shape="square"></el-avatar>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="grid-content" style="font-size: 16px; line-height: 22px;cursor:pointer;">
+                                    <router-link
+                                            :to="`/navbar/users/`+this.uId+``"
+                                            tag="span">
+                                        <p v-cloak>{{userName}}</p>
+                                    </router-link>
+                                </div>
+                            </el-col>
+
+                        </el-row>
+                        <el-divider content-position="left">最近更新</el-divider>
+                        <div style="font-size: 14px; line-height: 22px;margin-left: 10px;margin-right: 10px;">
+                            <p class="topiclist" v-for="(item,index) in topicList" :key="item.tId">
+                                <router-link
+                                        tag="span"
+                                        :to="`/navbar/article/`+item.tId+``">
+                                    {{item.tTopic}}
+                                </router-link>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="grid-content list-shadow word">
+                        <h4 style="display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;border-left: 4px solid #409eff;margin-left: 20px;padding-left: 6px;">本文云图</h4>
+
+                        <div id="main" style="width: 270px;height: 270px;"></div>
+                    </div>
+                </el-col>
             </el-row>
         </div>
     </div>
@@ -133,6 +152,39 @@
         // 标签设置
         dynamicTags: [],
         inputVisible: false,
+        //  文章列表
+        topicList: [],
+        //  定时器
+        timer: {},
+        //  窗口高度
+        screenHeight: window.innerHeight,
+        tRecommend: 0,
+        bgStyle: [{
+          'background-image': 'url(' + require('./../../../../src/assets/recommend1.png') + ')',
+          'background-size': '140px,100%',
+          'background-position': 'top right',
+          'background-repeat': 'no-repeat'
+        }, {
+          'background-image': 'url(' + require('./../../../../src/assets/recommend2.png') + ')',
+          'background-size': '140px,100%',
+          'background-position': 'top right',
+          'background-repeat': 'no-repeat'
+        }, {
+          'background-image': 'url(' + require('./../../../../src/assets/recommend3.png') + ')',
+          'background-size': '140px,100%',
+          'background-position': 'top right',
+          'background-repeat': 'no-repeat'
+        }, {
+          'background-image': 'url(' + require('./../../../../src/assets/recommend4.png') + ')',
+          'background-size': '140px,100%',
+          'background-position': 'top right',
+          'background-repeat': 'no-repeat'
+        }, {
+          'background-image': 'url(' + require('./../../../../src/assets/recommend5.png') + ')',
+          'background-size': '140px,100%',
+          'background-position': 'top right',
+          'background-repeat': 'no-repeat'
+        }]
       };
     },
     components: {
@@ -144,12 +196,14 @@
     created() {
       this.reqUserInfo();
       this.getTopic();
-      this.isUserStar();
+    },
+    beforeDestroy() {
+      clearInterval(this.timer);
     },
     watch: {
       // 监听路由改变刷新页面
       $route(to, from) {
-        this.$router.go(0);
+        this.getTopic();
       }
     },
     methods: {
@@ -203,12 +257,11 @@
       },
       // 判断当前文章是否被当前用户收藏
       async isUserStar() {
-
-        console.log(this.userInfo.uId);
         if (this.userInfo.uId) {
           let res = await userIsStar(this.userInfo.uId, this.$route.params.tId);
 
           if (res.err_code === 0) {
+            this.isStar = false;
             var res1 = JSON.parse(res.results);
             if (!res1[0]) {
               // console.log('未收藏');
@@ -232,10 +285,16 @@
         let res = await getTopicDetail(this.$route.params.tId);
 
         if (res.err_code === 0) {
+
+          console.log(res.words);
           // 文章详细信息
-          var results = JSON.parse(res.results)[0];
+          let results = JSON.parse(res.results)[0];
 
           let model = JSON.parse(results.tModel)[0];
+
+          this.topicList = JSON.parse(res.list)
+
+          this.dynamicTags = []
 
           for (let key in model) {
             if (model[key] === 1) {
@@ -243,7 +302,12 @@
             }
           }
 
-          this.contents = (results.tContents).replace(/data-src/g, "src");
+          let styleReg = /style\s*?=\s*?(['"])[\s\S]*?\1/g;
+          let widthReg = /width\s*?=\s*?(['"])[\s\S]*?\1/g;
+          let heightReg = /height\s*?=\s*?(['"])[\s\S]*?\1/g;
+
+          // 清除文章字符串的行内样式
+          this.contents = (results.tContents).replace(styleReg, '').replace(widthReg, '').replace(heightReg, '');
 
           // 获取文章头图
           /*var reg = /<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\1[^>]*?\/?\s*>/;
@@ -262,11 +326,39 @@
           this.time = results.tTime;
           this.userName = results.userName;
           this.uId = results.uId;
+          this.tRecommend = results.tRecommend
+          console.log(results.tRecommend);
+
 
           this.avatarSrc = this.imgBaseUrl + results.userAvatar;
 
           // 加载防止闪烁
           this.$emit("func", "我好了");
+        }
+        // 判断是否收藏
+        this.isUserStar();
+
+        // 转换键名
+        let word = res.words.map((item) => {
+          return {name: item.word, value: item.weight}
+        })
+
+        // 加载云图
+        this.echartsCloud(word)
+
+        // 记录浏览时间，修订用户模型
+        let model = JSON.parse(localStorage.getItem('model'))
+
+        for (let key in model[0]) {
+          for (let i = 0; i < this.dynamicTags.length; i++) {
+            if (key == this.dynamicTags[i]) {
+
+              this.timer = setInterval(function () {
+                model[0][key]++
+                localStorage.setItem('model', JSON.stringify(model))
+              }, 1000)
+            }
+          }
         }
       },
       // 上一篇
@@ -307,9 +399,93 @@
       tagPage(tag) {
         // console.log(tag);
 
-        this.$router.push(`/navbar/tagpage/`+tag)
-      }
+        this.$router.push(`/navbar/tagpage/` + tag)
+      },
+      //  绘制云图
+      echartsCloud(word) {
+
+        var maskImage = new Image();
+        var echarts = require('echarts');
+        // require('echarts-wordcloud');
+        var chart = echarts.init(document.getElementById('main'));
+
+        var option = {
+          series: [{
+            type: 'wordCloud',
+
+            // The shape of the "cloud" to draw. Can be any polar equation represented as a
+            // callback function, or a keyword present. Available presents are circle (default),
+            // cardioid (apple or heart shape curve, the most known polar equation), diamond (
+            // alias of square), triangle-forward, triangle, (alias of triangle-upright, pentagon, and star.
+
+            shape: 'circle',
+
+            // A silhouette image which the white area will be excluded from drawing texts.
+            // The shape option will continue to apply as the shape of the cloud to grow.
+
+            maskImage: maskImage,
+            // Folllowing left/top/width/height/right/bottom are used for positioning the word cloud
+            // Default to be put in the center and has 75% x 80% size.
+
+            left: 'center',
+            top: 'center',
+            width: '100%',
+            height: '100%',
+            right: null,
+            bottom: null,
+            sizeRange: [10, 30],
+
+            // Text rotation range and step in degree. Text will be rotated randomly in range [-90, 90] by rotationStep 45
+
+            rotationRange: [-90, 90],
+            rotationStep: 45,
+
+            // size of the grid in pixels for marking the availability of the canvas
+            // the larger the grid size, the bigger the gap between words.
+
+            gridSize: 5,
+
+            // set to true to allow word being draw partly outside of the canvas.
+            // Allow word bigger than the size of the canvas to be drawn
+            drawOutOfBound: false,
+
+            // Global text style
+            textStyle: {
+              normal: {
+                fontFamily: 'sans-serif',
+                fontWeight: 'bold',
+                // Color can be a callback function or a color string
+                color: function () {
+                  // Random color
+                  return 'rgb(' + [
+                    Math.round(Math.random() * 160),
+                    Math.round(Math.random() * 160),
+                    Math.round(Math.random() * 160)
+                  ].join(',') + ')';
+                }
+              },
+              emphasis: {
+                shadowBlur: 10,
+                shadowColor: '#333'
+              }
+            },
+
+            // Data is an array. Each array item must have name and value property.
+            data: word
+          }]
+        }
+        maskImage.onload = function () {
+          option.series[0].maskImage
+          chart.setOption(option);
+        }
+        maskImage.src = require('./../../../../src/assets/mask.png');
+      },
+      scrollEvent(e) {
+        console.log(e)
+      },
+
     }
+
   };
 </script>
 
@@ -334,7 +510,7 @@
         text-align: center;
         position: fixed;
         right: 40px;
-        top: 55px;
+        top: 75px;
     }
 
     .rightbar ul li {
@@ -361,6 +537,16 @@
 
     .el-tag {
         cursor: pointer !important;
+    }
+
+    .topiclist {
+        cursor: pointer;
+        margin-bottom: 10px;
+
+    }
+
+    .topiclist:hover {
+        text-decoration: underline;
     }
 
 </style>

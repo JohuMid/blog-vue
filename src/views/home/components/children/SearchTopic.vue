@@ -9,58 +9,82 @@
                         <p style="font-weight: bolder">没有查询到结果~</p>
 
                     </div>
-                    <li v-for="(item , index) in searchData" :key="item.tId"  v-else>
+                    <li v-for="(item , index) in searchData" :key="item.tId">
                         <el-row>
-                            <el-col :span="4" style="text-align: center;width: 80px;">
-                                <div class="grid-content ">
-                                    <router-link
-                                            class="users"
-                                            :to="`/navbar/users/`+item.uId+``">
-                                        <el-avatar shape="square" :size="50"
-                                                   :src="imgBaseUrl+item.userAvatar"
-                                                   alt="...">
-                                        </el-avatar>
-                                    </router-link>
-                                </div>
-                            </el-col>
-                            <el-col :span="13">
-                                <div class="grid-content">
-                                    <p class="title">
-                                        <el-link type="primary">
+                            <el-col v-if="!item.tHeadImage||item.tHeadImage=='undefined'">
+                                <el-col :span="24">
+                                    <div class="grid-content">
+                                        <p class="title">
+                                            <el-link type="primary">
+                                                <router-link
+                                                        tag="h2"
+                                                        style="font-weight: 700"
+
+                                                        :to="`/navbar/article/`+item.tId+``"
+                                                        class="media-heading">{{item.tTopic}}
+                                                </router-link>
+                                            </el-link>
+                                        </p>
+                                        <p class="summary">
+                                            {{item.tWords+'...'}}
+                                        </p>
+                                        <p class="footnote">
+                                            <el-avatar :size="25"
+                                                       :src="imgBaseUrl+item.userAvatar"
+                                                       alt="...">
+                                            </el-avatar>
                                             <router-link
-                                                    tag="h2"
-                                                    :to="`/navbar/article/`+item.tId+``"
-                                                    class="media-heading">{{item.tTopic}}
+                                                    class="users"
+                                                    :to="`/navbar/users/`+item.uId+``">
+                                                <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
                                             </router-link>
-                                        </el-link>
-                                    </p>
-                                    <p class="summary">
-                                        {{item.tWords+'...'}}
-                                    </p>
-                                    <p class="footnote">
-                                        <span>{{item.userName}}</span>
-                                        发布了文章
-                                        <span>{{item.tTime | timeFormatSimple}}</span>
-                                    </p>
-                                </div>
+                                            发布
+                                            <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                        </p>
+                                    </div>
+                                </el-col>
                             </el-col>
-
-                            <el-col v-if="!item.tHeadImage">
-
-                            </el-col>
-                            <el-col :span="6" v-else>
-
-                                <div class="block">
+                            <el-col v-else>
+                                <el-col :span="20">
+                                    <div class="grid-content">
+                                        <p class="title">
+                                            <el-link type="primary">
+                                                <router-link
+                                                        tag="h2"
+                                                        style="font-weight: 600"
+                                                        :to="`/navbar/article/`+item.tId+``"
+                                                        class="media-heading">{{item.tTopic}}
+                                                </router-link>
+                                            </el-link>
+                                        </p>
+                                        <p class="summary">
+                                            {{item.tWords+'...'}}
+                                        </p>
+                                        <p class="footnote">
+                                            <el-avatar :size="25"
+                                                       :src="imgBaseUrl+item.userAvatar"
+                                                       alt="...">
+                                            </el-avatar>
+                                            <router-link
+                                                    class="users"
+                                                    :to="`/navbar/users/`+item.uId+``">
+                                                <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
+                                            </router-link>
+                                            发布
+                                            <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                        </p>
+                                    </div>
+                                </el-col>
+                                <el-col :span="4" class="block">
                                     <el-image
                                             style="width: 150px; height: 90px;border-radius: 5px"
                                             :src="item.tHeadImage"
                                             :fit="fits[0]"></el-image>
-                                </div>
+                                </el-col>
 
                             </el-col>
                         </el-row>
                         <el-divider></el-divider>
-
                     </li>
 
 

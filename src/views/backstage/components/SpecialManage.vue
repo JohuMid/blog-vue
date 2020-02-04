@@ -182,7 +182,6 @@
 
         let res = await getSpecialTopic(name, this.pageNum, this.currentPage)
         if (res.err_code === 0) {
-          console.log(res.results);
 
           this.tableData = res.results;
 

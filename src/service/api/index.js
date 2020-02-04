@@ -122,6 +122,14 @@ export const prevAllTopic = (topicIndex) => ajax(LOCAL_BASE_URL + '/prev', {topi
 export const nextAllTopic = (topicIndex) => ajax(LOCAL_BASE_URL + '/next', {topicIndex});
 // 发表评论
 export const publishChat = (uId, topicIndex, chat) => ajax(LOCAL_BASE_URL + '/publishchat', {uId, topicIndex, chat});
+// 发表评论回复
+export const publishReplyChat = (rId, uId, tId, userName, reply) => ajax(LOCAL_BASE_URL + '/publishreplychat', {
+  rId,
+  uId,
+  tId,
+  userName,
+  reply
+});
 // 获取文章对应评论
 export const getChat = (topicIndex) => ajax(LOCAL_BASE_URL + '/chat', {topicIndex});
 // 收藏
@@ -138,6 +146,7 @@ export const userIsStar = (uId, topicIndex) => ajax(LOCAL_BASE_URL + '/isusersta
 export const userIsAttention = (uId, usersId) => ajax(LOCAL_BASE_URL + '/isuserattention', {uId, usersId});
 // 获取标签页
 export const tagTopic = (tag, page) => ajax(LOCAL_BASE_URL + '/tagtopic', {tag, page});
+
 
 /**
  * 后台操作
@@ -166,7 +175,12 @@ export const getSpecialTopic = (tag, pageNum, currentPage) => ajax(LOCAL_BASE_UR
   tag,
   pageNum,
   currentPage
-},'POST');
+}, 'POST');
+// 文章推荐评级
+export const rate = (tId, value) => ajax(LOCAL_BASE_URL + '/rate', {tId, value});
+
+
+
 
 
 

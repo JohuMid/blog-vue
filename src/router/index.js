@@ -22,12 +22,18 @@ import Article from "../views/home/components/Article";
 import Search from "../views/home/components/Search";
 // 标签页
 import tagPage from "../views/home/components/tagPage";
+// 推荐作者
+import AuthorRecommend from "../views/home/components/AuthorRecommend";
+// 推荐文章
+import topicRecommend from "../views/home/components/topicRecommend";
+
+// 后台页面
 
 // 用户分析
 import UserAnalysis from "../views/backstage/components/UserAnalysis";
 import UserAction from "../views/backstage/components/UserAction";
 
-// 后台页面
+
 import Backstage from "../views/backstage/Backstage";
 
 import ArticleManage from "../views/backstage/components/ArticleManage";
@@ -61,6 +67,8 @@ export default new VueRouter({
         {path: 'publish', name: 'publish', component: Publish},
         {path: 'search/:searchInput', name: 'search', component: Search},
         {path: 'tagpage/:tag', name: 'tagpage', component: tagPage},
+        {path: 'authorrecommend', name: 'authorrecommend', component: AuthorRecommend},
+        {path: 'topicrecommend', name: 'topicrecommend', component: topicRecommend},
       ]
     },
     {path: '/login', name: 'login', component: Login},
