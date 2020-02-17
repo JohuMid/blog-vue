@@ -101,33 +101,27 @@
     name: "SearchTopic",
     data() {
       return {
-        allArticleList: [],
+        searchData: [],
         fits: ['cover'],
       }
     },
 
     created() {
-      this.search()
+      this.searchTopic()
     },
-    computed: {
-      searchData() {
-        let content = this.$route.params.searchInput;
-        if (content) {
-          return this.allArticleList.filter(function (product) {
-            return Object.keys(product).some(function (key) {
-              return String(product[key]).toLowerCase().indexOf(content) > -1
-            })
-          })
-        }
-        return this.newList;
+    watch: {
+      // 监听路由改变刷新页面
+      $route(to, from) {
+        this.searchTopic();
       }
     },
     methods: {
-      async search() {
+      async searchTopic() {
         // console.log(this.$route.params.searchInput);
-        let res = await getAllTopicList()
+        let res = await getAllTopicList(this.$route.params.searchInput)
         if (res.err_code === 0) {
-          this.allArticleList = JSON.parse(res.results)
+
+          this.searchData = (JSON.parse(res.results));
 
         }
       }

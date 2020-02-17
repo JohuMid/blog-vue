@@ -20,6 +20,9 @@
 <script>
   // 工具栏配置
   import {getTopicDetail, uploadAvatar} from "../service/api";
+  import * as Quill from 'quill';
+
+  let fontSizeStyle = ['10px', '12px', '14px', '16px', '20px', '24px', '36px'];
 
   const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'], // 加粗 斜体 下划线 删除线 -----['bold', 'italic', 'underline', 'strike']
@@ -29,7 +32,7 @@
     [{script: 'sub'}, {script: 'super'}], // 上标/下标-----[{ script: 'sub' }, { script: 'super' }]
     [{indent: '-1'}, {indent: '+1'}], // 缩进-----[{ indent: '-1' }, { indent: '+1' }]
     [{'direction': 'rtl'}], // 文本方向-----[{'direction': 'rtl'}]
-    [{size: ['small', false, 'large', 'huge']}], // 字体大小-----[{ size: ['small', false, 'large', 'huge'] }]
+    [{size: fontSizeStyle}],
     [{header: [1, 2, 3, 4, 5, 6, false]}], // 标题-----[{ header: [1, 2, 3, 4, 5, 6, false] }]
     [{color: []}, {background: []}], // 字体颜色、字体背景颜色-----[{ color: [] }, { background: [] }]
     [{font: []}], // 字体种类-----[{ font: [] }]
@@ -221,7 +224,7 @@
 
     .ql-snow .ql-picker.ql-size .ql-picker-label::before,
     .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-        content: '14px';
+        content: '16px';
     }
 
     .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,

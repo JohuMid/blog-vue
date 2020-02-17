@@ -18,10 +18,17 @@
                 </div>
             </el-col>
             <el-col :span="12">
-                <div class="grid-content bg-purple">
-                    <el-card class="card">
+                <div class="grid-content bg-purple" >
+                    <el-card class="card" style="height:127px; overflow-y: auto">
                         <li class="tagLi" v-for="(item,index) in tagList" :key="index" :class="item.active"><a
-                                :href="item.link" @click="changeTag(item.name)">{{item.name}}</a></li>
+                                :href="item.link" @click="changeTag(item.spValue)">{{item.spLabel}}</a></li>
+
+                        <li title="增加专题" class="addLi" @click="addTag()">
+                            <i class="el-icon-plus"></i>
+                        </li>
+                        <li title="删除专题" class="reduceLi" @click="reduceTag()">
+                            <i class="el-icon-minus"></i>
+                        </li>
                     </el-card>
                 </div>
             </el-col>
@@ -112,44 +119,74 @@
             </el-pagination>
         </div>
         <!--            弹出框文章详情-->
-        <el-dialog title="文章详情" :visible.sync="dialogFormVisible">
+        <el-dialog title="文章详情" :visible.sync="dialogTopicVisible">
+
             <div class="ql-container ql-snow">
                 <div class="ql-editor" v-html="tContents" v-highlight>
-                    <!--                                            正文开始-->
+                    <!--正文开始-->
                 </div>
             </div>
 
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dialogTopicVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!--            弹出框增加专题详情-->
+        <el-dialog title="专题设置" :visible.sync="dialogFormVisible">
+
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="专题名称">
+                    <el-input v-model="form.label"></el-input>
+                </el-form-item>
+                <el-form-item label="专题值">
+                    <el-input v-model="form.value"></el-input>
+                </el-form-item>
+                <el-form-item label="专题层级">
+                    <el-select v-model="form.floor" placeholder="请选择专题层次">
+                        <el-option label="一级专题" value="1"></el-option>
+                        <el-option label="二级专题" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                <!--选择为二级专题时候出现-->
+                <el-form-item v-if="Number(form.floor)===2" label="上级专题">
+                    <el-cascader
+                            v-model="specialvalue"
+                            :options="options"
+                            :props="{ expandTrigger: 'hover' }">
+                    </el-cascader>
+                </el-form-item>
+                <el-form-item label="私密专题">
+                    <el-switch v-model="form.secret"></el-switch>
+                </el-form-item>
+                <el-form-item label="专题简介">
+                    <el-input type="textarea" v-model="form.brief"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button>取消</el-button>
+
+                <el-button type="primary" @click="addTagOption()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-  import {deleteTopic, getSpecialTopic, getTopicDetail} from "../../../service/api";
+  import {
+    deleteTopic,
+    getSpecialTopic,
+    getTopicDetail,
+    addSpecial,
+    reduceSpecial,
+    firstFloor
+  } from "../../../service/api";
 
   export default {
     name: "SpecialManage",
     data() {
       return {
         // 标签列表
-        tagList: [{name: "娱乐", active: false},
-          {name: "汽车", active: false},
-          {name: "职场", active: false},
-          {name: "科技", active: false},
-          {name: "房产", active: false},
-          {name: "生活", active: false},
-          {name: "互联网", active: false},
-          {name: "创投", active: false},
-          {name: "游戏", active: false},
-          {name: "评测", active: false},
-          {name: "电影", active: false},
-          {name: "计算机", active: false},
-          {name: "体育", active: false},
-          {name: "智能", active: false},
-          {name: "综合", active: false}
-        ],
+        tagList: [],
         tableData: [],
         // 总条数
         total: 0,
@@ -159,23 +196,38 @@
         currentPage: 1,
         // 弹出框显示隐藏
         dialogFormVisible: false,
+        // 弹出文章框
+        dialogTopicVisible: false,
         //  文章tId
         tId: 0,
         //  文章详情
         tContents: '',
         search: '',
-        // 专题名
-        name: '娱乐',
+        // 初始专题名
+        name: 'yule',
         // 专题数量
         tagNum: 0,
         // 专题文章数量
         topicNum: 0,
+        form: {
+          label: '',
+          value: '',
+          floor: '',
+          type: [],
+          resource: '',
+          desc: '',
+          secret: false,
+          brief: ''
+        },
+        specialvalue: [],
+        options: [],
       }
     },
     created() {
-      this.changeTag(this.name)
+      this.getFirstFloor()
     },
     methods: {
+      // 点击变换标签
       async changeTag(name) {
 
         this.name = name
@@ -187,18 +239,29 @@
 
           this.total = res.num;
 
-          this.topicNum = res.num
+          this.topicNum = res.num;
 
           this.tagNum = this.tagList.length;
 
           for (let i = 0; i < this.tagList.length; i++) {
-            if (this.tagList[i].name == this.name) {
+            if (this.tagList[i].spValue == this.name) {
               this.tagList[i].active = "active"
             } else {
               this.tagList[i].active = false
             }
           }
         }
+      },
+      // 获取tagList，options
+      async getFirstFloor() {
+        let res = await firstFloor()
+        if (res.err_code === 0) {
+
+          this.tagList = res.tagList;
+          this.options = res.options
+        }
+        // 切换主题
+        this.changeTag(this.name)
       },
       handleSizeChange(val) {
         this.pageNum = Number(`${val}`);
@@ -209,7 +272,7 @@
         this.changeTag(this.name)
       },
       async dialog(index, row) {
-        this.dialogFormVisible = true
+        this.dialogTopicVisible = true
         let res = await getTopicDetail(row.tId)
 
         if (res.err_code === 0) {
@@ -230,12 +293,84 @@
               message: '删除成功！',
               type: 'success'
             });
-            this.reqTopicsData()
+            this.changeTag()
           }
         }).catch(() => {
           console.log('啥都没做')
         });
+      },
+      // 增加专题
+      addTag() {
+        this.dialogFormVisible = true
+      },
+      // 删除专题
+      reduceTag() {
+        this.$prompt('请输入要删除的专题', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[\w\W!#$%&'*+/=?^_`{|}~-]+?/,
+          inputErrorMessage: '没有输入内容'
+        }).then(async ({value}) => {
 
+          let res = await reduceSpecial(value)
+          if (res.err_code === 0) {
+            this.$message({
+              type: 'success',
+              message: '删除专题成功！'
+            });
+            this.getFirstFloor()
+          } else if (res.err_code === 10) {
+            this.$message({
+              type: 'warning',
+              message: '没有相关专题'
+            });
+          }
+        });
+      },
+      handleChange(value) {
+        console.log(value);
+      },
+
+      //  增加专题
+      async addTagOption() {
+
+        if (!this.form.label) {
+          this.$message({
+            message: '请输入专题名称！',
+          });
+        } else if (!this.form.value) {
+          this.$message({
+            message: '请输入专题值！',
+          });
+        } else if (!this.form.floor) {
+          this.$message({
+            message: '请输入专题层次！',
+          });
+        } else if (Number(this.form.floor) === 2 && !this.specialvalue[0]) {
+          this.$message({
+            message: '请输入上级专题！',
+          });
+        } else if (!this.form.brief) {
+          this.$message({
+            message: '请输入专题简介！',
+          });
+        } else {
+
+          let res = await addSpecial(this.form.label, this.form.value, this.form.floor, this.specialvalue[0], this.form.secret, this.form.brief)
+          if (res.err_code === 0) {
+            this.$message({
+              message: '增加专题成功！',
+              type: 'success'
+            });
+            this.dialogFormVisible = false
+            this.getFirstFloor()
+          } else if (res.err_code === 11) {
+            this.$message({
+              message: '专题已经存在',
+              type: 'warning'
+            });
+          }
+        }
       }
     }
   }
@@ -294,6 +429,32 @@
     }
 
     .active a {
+        color: white;
+    }
+
+    .addLi {
+        float: left;
+        width: 100px;
+        height: 25px;
+        margin-bottom: 10px;
+        text-align: center;
+        line-height: 25px;
+        cursor: pointer;
+        background: #409eff;
+        box-sizing: border-box;
+        color: white;
+    }
+
+    .reduceLi {
+        float: left;
+        width: 100px;
+        height: 25px;
+        margin-bottom: 10px;
+        text-align: center;
+        line-height: 25px;
+        cursor: pointer;
+        background: #f56c6c;
+        box-sizing: border-box;
         color: white;
     }
 </style>

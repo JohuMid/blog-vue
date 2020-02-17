@@ -43,6 +43,8 @@ export const forgetPsd = (userNewEmail, userNewPassword, userNewVecode) => ajax(
 export const getUserData = () => ajax(LOCAL_BASE_URL + '/reqdata', {});
 // 退出登录
 export const getLogOut = () => ajax(LOCAL_BASE_URL + '/logout', {});
+// 获取专题信息
+export const special = () => ajax(LOCAL_BASE_URL + '/special', {});
 // 发布文章
 export const publishTopic = (uId, userTheme, userTopic, tModel) => ajax(LOCAL_BASE_URL + '/publish', {
   uId,
@@ -53,10 +55,11 @@ export const publishTopic = (uId, userTheme, userTopic, tModel) => ajax(LOCAL_BA
 // 上传文章中包含的图片
 export const uploadTopicImg = (uId, data) => ajax(LOCAL_BASE_URL + '/uplodtopicimg', {uId, data}, 'POST');
 // 修改文章
-export const updateTopic = (tId, userTheme, userTopic) => ajax(LOCAL_BASE_URL + '/updatetopic', {
+export const updateTopic = (tId, userTheme, userTopic, tModel) => ajax(LOCAL_BASE_URL + '/updatetopic', {
   tId,
   userTheme,
-  userTopic
+  userTopic,
+  tModel
 }, 'POST');
 
 
@@ -66,9 +69,9 @@ export const getBannerTopic = () => ajax(LOCAL_BASE_URL + '/bannertopic');
 // 获取文章简要信息
 export const getTopicList = (page) => ajax(LOCAL_BASE_URL + '/topiclist', {page});
 // 获取全部文章信息
-export const getAllTopicList = () => ajax(LOCAL_BASE_URL + '/alltopiclist');
+export const getAllTopicList = (searchInput) => ajax(LOCAL_BASE_URL + '/alltopiclist', {searchInput});
 // 获取全部用户信息
-export const getAllUserList = () => ajax(LOCAL_BASE_URL + '/alluserlist');
+export const getAllUserList = (searchInput) => ajax(LOCAL_BASE_URL + '/alluserlist', {searchInput});
 
 
 // 获取用户详细信息
@@ -86,6 +89,12 @@ export const editUserAllData = (uId, nickname, birthday, local, sex, intro) => a
 export const uploadAvatar = (uId, data) => ajax(LOCAL_BASE_URL + '/editavatar', {uId, data}, 'POST');
 // 获取当前用户文章
 export const getUserTopic = (uId, pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/usertopic', {
+  uId,
+  pageNum,
+  currentPage
+});
+// 获取其他用户文章
+export const getUsersTopic = (uId, pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/userstopic', {
   uId,
   pageNum,
   currentPage
@@ -114,7 +123,7 @@ export const getUserNews = (uId) => ajax(LOCAL_BASE_URL + '/usernews', {
   uId,
 });
 
-// 获取文章详细信息
+// 获取文章详细信息，和最近更新
 export const getTopicDetail = (topicIndex) => ajax(LOCAL_BASE_URL + '/topicdetail', {topicIndex}, 'POST');
 // 上一篇
 export const prevAllTopic = (topicIndex) => ajax(LOCAL_BASE_URL + '/prev', {topicIndex});
@@ -132,6 +141,8 @@ export const publishReplyChat = (rId, uId, tId, userName, reply) => ajax(LOCAL_B
 });
 // 获取文章对应评论
 export const getChat = (topicIndex) => ajax(LOCAL_BASE_URL + '/chat', {topicIndex});
+// 获取文章阅读更多
+export const getReadmore = (tTopic) => ajax(LOCAL_BASE_URL + '/readmore', {tTopic});
 // 收藏
 export const userCollect = (uId, topicIndex) => ajax(LOCAL_BASE_URL + '/collect', {uId, topicIndex});
 // 取消收藏
@@ -178,6 +189,48 @@ export const getSpecialTopic = (tag, pageNum, currentPage) => ajax(LOCAL_BASE_UR
 }, 'POST');
 // 文章推荐评级
 export const rate = (tId, value) => ajax(LOCAL_BASE_URL + '/rate', {tId, value});
+// 文章置顶
+export const stickyTopic = (flag, tId) => ajax(LOCAL_BASE_URL + '/stickytopic', {flag, tId});
+// 获取没审核的文章
+export const getCheckData = (uId, pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/getcheckdata', {
+  uId,
+  pageNum,
+  currentPage
+}, 'POST');
+// 文章过审
+export const passTopic = (tId) => ajax(LOCAL_BASE_URL + '/passtopic', {tId});
+// 文章不过审
+export const noPassTopic = (tId) => ajax(LOCAL_BASE_URL + '/nopasstopic', {tId});
+// 概览数据
+export const getOverview = () => ajax(LOCAL_BASE_URL + '/getoverview');
+// 获取管理员数据
+export const getAdminData = (pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/getadmindata', {
+  pageNum,
+  currentPage
+}, 'POST');
+
+
+// 获取管理员注册验证码
+export const getAdminVecode = (userEmail, userName) => ajax(LOCAL_BASE_URL + '/adminvecode', {userEmail, userName});
+// 管理员注册
+export const adminRegister = (userEmail, userName, userPassword, userVecode) => ajax(LOCAL_BASE_URL + '/adminregister', {
+  userEmail,
+  userName,
+  userPassword,
+  userVecode
+}, 'POST');
+// 增加专题
+export const addSpecial = (label, value, floor, father, secret, brief) => ajax(LOCAL_BASE_URL + '/addspecial', {
+  label, value, floor, father, secret, brief
+}, 'POST');
+// 删除专题
+export const reduceSpecial = (value) => ajax(LOCAL_BASE_URL + '/reducespecial', {value}, 'POST');
+// 获取一级专题
+export const firstFloor = () => ajax(LOCAL_BASE_URL + '/firstfloor', {})
+// 运营数据
+export const operationData = () => ajax(LOCAL_BASE_URL + '/operationdata', {},'POST')
+
+
 
 
 

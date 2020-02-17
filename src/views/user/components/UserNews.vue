@@ -12,16 +12,64 @@
                         :color="timeline.color"
                         :size="timeline.size">
                     <el-card>
-                        你的文章
-                        <router-link :to="'/navbar/article/'+item.tId">
-                            《{{item.tTopic}}》
-                        </router-link>
-                        被
-                        <router-link :to="'/navbar/users/'+item.uId">
-                            {{item.userName}}
-                        </router-link>
-                        {{item.type|aboutWord}}
-                        了
+                        <div v-if="item.type=='star'">
+                            你的文章
+                            <router-link :to="'/navbar/article/'+item.tId">
+                                《{{item.tTopic}}》
+                            </router-link>
+                            被
+                            <router-link :to="'/navbar/users/'+item.uId">
+                                {{item.userName}}
+                            </router-link>
+                            {{item.type|aboutWord}}
+                            了
+                        </div>
+                        <div v-else-if="item.type=='chat'">
+                            你的文章
+                            <router-link :to="'/navbar/article/'+item.tId">
+                                《{{item.tTopic}}》
+                            </router-link>
+                            被
+                            <router-link :to="'/navbar/users/'+item.uId">
+                                {{item.userName}}
+                            </router-link>
+                            {{item.type|aboutWord}}
+                            了
+                        </div>
+                        <div v-else-if="item.type=='like'">
+                            你被
+                            <router-link :to="'/navbar/users/'+item.uId">
+                                {{item.userName}}
+                            </router-link>
+                            {{item.type|aboutWord}}
+                            了
+                        </div>
+                        <div v-else-if="item.type=='reply'">
+                            你在文章
+                            <router-link :to="'/navbar/article/'+item.tId">
+                                《{{item.tTopic}}》
+                            </router-link>
+                            中的评论被
+                            <router-link :to="'/navbar/users/'+item.uId">
+                                {{item.userName}}
+                            </router-link>
+                            {{item.type|aboutWord}}
+                            了
+                        </div>
+                        <div v-else-if="item.type=='pass'">
+                            你的文章
+                            <router-link :to="'/navbar/article/'+item.tId">
+                                《{{item.tTopic}}》
+                            </router-link>
+                            已经通过审核
+                        </div>
+                        <div v-else-if="item.type=='nopass'">
+                            你的文章
+                            <router-link :to="'/navbar/article/'+item.tId">
+                                《{{item.tTopic}}》
+                            </router-link>
+                            未通过审核，请重新编辑后发布
+                        </div>
                     </el-card>
                 </el-timeline-item>
             </el-timeline>

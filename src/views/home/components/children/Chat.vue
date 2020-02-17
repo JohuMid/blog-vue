@@ -64,7 +64,8 @@
                                         </el-col>
                                         <el-col :span="10">
                                             <div class="grid-content bg-purple-light">
-                                                <el-button type="primary" round @click="replyChat(item.uId,item.rId,index)">回复
+                                                <el-button type="primary" round
+                                                           @click="replyChat(item.uId,item.rId,index)">回复
                                                 </el-button>
                                                 <el-button type="danger" round @click="cancelReply(index)">取消
                                                 </el-button>
@@ -75,7 +76,7 @@
                                 <div style="width: 100px;height: 50px;position: absolute;top: 50px;"></div>
                                 <el-col :span="20" :offset="0" style="margin-top: 10px;">
 
-                                    <ol v-for="(item,index) in item.replay" :key="item.rcId"
+                                    <ol v-for="(item,index) in item.reply" :key="item.rcId"
                                         style="margin-bottom: 5px;">
                                         <el-row style="margin-left: 60px;color: #7c7c7c;font-size: 14px">
                                             <el-col :span="20">
@@ -140,12 +141,13 @@
       // 获取评论
       async getTopicChat() {
 
+
         // let topicIndex = getStore('topicIndex')
         let res = await getChat(this.$route.params.tId)
 
         let chatList = (JSON.parse(res.results))
 
-        console.log(chatList);
+        // console.log(chatList);
 
         for (let i = 0; i < chatList.length; i++) {
           chatList[i]['isChatShow'] = 0
@@ -175,10 +177,12 @@
               });
 
               let newChat = {
+                rId: res.rId,
                 uId: this.userInfo.uId,
                 userAvatar: this.userInfo.userAvatar,
                 userName: this.userInfo.userName,
                 rChat: this.form.chat,
+                reply:[]
               };
 
               // 存储评论状态
@@ -213,12 +217,12 @@
 
       },
       // 回复评论
-      async replyChat(uId,rId, index) {
+      async replyChat(uId, rId, index) {
+
         if (this.userInfo) {
 
           if (!(this.form.reply.trim())) {
             Message('请输入内容后再回复!');
-
           } else {
 
             let res = await publishReplyChat(rId, this.userInfo.uId, this.$route.params.tId, this.userInfo.userName, this.form.reply)
@@ -237,7 +241,7 @@
                 rcReply: this.form.reply,
               }
 
-              this.chatList[index].replay.unshift(newReply)
+              this.chatList[index].reply.unshift(newReply)
 
               for (let i = 0; i < this.chatList.length; i++) {
                 this.chatList[i].isChatShow = 0
@@ -274,13 +278,13 @@
         } else {
           Message('请登录后再回复!');
         }
-
       },
       // 取消回复
       cancelReply(index) {
         this.chatList[index].isChatShow = 0
       },
-      enterChat() {
+      enterChat(rId) {
+        // console.log(rId);
         this.isTextShow = 1
       },
       leaveChat() {

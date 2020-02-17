@@ -65,7 +65,7 @@
 
 <script>
   import {mapState} from "vuex";
-  import {getUserTopic} from "../../../service/api";
+  import {getUsersTopic} from "../../../service/api";
   import {setStore, getStore} from "../../../config/global";
 
   export default {
@@ -92,7 +92,7 @@
     },
     methods: {
       async getUserList() {
-        let res = await getUserTopic(this.$route.params.uId, this.pageNum, this.currentPage);
+        let res = await getUsersTopic(this.$route.params.uId, this.pageNum, this.currentPage);
 
         // console.log(res);
 

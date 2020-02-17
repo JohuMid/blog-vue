@@ -11,22 +11,22 @@
                             prop="tId"
                             label="文章ID"
                             sortable
-                            width="180">
+                            width="100">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
                             label="发布人"
                             sortable
-                            width="180">
+                            width="100">
                     </el-table-column>
                     <el-table-column
                             prop="tTopic"
-                            width="180"
+                            width="280"
                             label="发布标题">
                     </el-table-column>
                     <el-table-column
                             prop="tModel"
-                            width="180"
+                            width="100"
                             label="文章标签">
                     </el-table-column>
                     <el-table-column
@@ -38,7 +38,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            width="200"
+                            width="80"
                             label="属性">
                         <template slot-scope="scope">
                             <router-link
@@ -56,6 +56,22 @@
                                     size="mini"
                             >查看
                             </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="tRecommend"
+                            width="150"
+                            label="推荐值">
+                        <template slot-scope="scope">
+                            <div class="block">
+                                <el-rate
+                                        v-model="scope.row.tRecommend"
+                                        :colors="colors"
+                                        @change="change(scope.row.tRecommend,scope.row)"
+
+                                >
+                                </el-rate>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -97,7 +113,7 @@
 
 <script>
   import {topicAction} from "../../../../service/api/analysis";
-  import {deleteTopic, getTopicDetail} from "../../../../service/api";
+  import {deleteTopic, getTopicDetail, rate} from "../../../../service/api";
 
   export default {
     name: "encourageArticle",
@@ -111,6 +127,9 @@
         search: '',
         //  文章详情
         tContents: '',
+        //  评分属性
+        value2: null,
+        colors: {2: '#f2d3a3', 4: {value: '#F7BA2A', excluded: true}, 5: '#FF9900'}
       }
     },
     created() {
@@ -154,6 +173,13 @@
           console.log('啥都没做')
         });
 
+      },
+      async change(value, row) {
+
+        let res = await rate(row.tId, value);
+        if (res.err_code === 0) {
+
+        }
       }
     }
   }

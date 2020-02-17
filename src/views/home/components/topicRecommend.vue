@@ -1,5 +1,5 @@
 <template>
-    <div id="topicrecommend">
+    <div id="topicrecommend" v-loading="loading">
         <el-row :gutter="20">
             <el-col :span="14" :offset="5">
                 <el-card style="margin-bottom: 30px;"
@@ -63,6 +63,7 @@
       return {
         topicRecommendList: [],
         fits: ['cover'],
+        loading: true
       }
     },
     created() {
@@ -74,10 +75,11 @@
 
         let model = localStorage.getItem('model')
         // 已经登录
-        console.log('已经登录');
+        console.log(model);
         let res = await getValueTopic(model)
 
         if (res.err_code === 0) {
+          this.loading=false
           this.topicRecommendList = res.results
         }
 
@@ -90,10 +92,15 @@
 </script>
 
 <style scoped>
+    #topicrecommend{
+        width: 100%;
+        height: 100%;
+    }
     .content {
         margin-bottom: 30px;
     }
     ::-webkit-scrollbar{
         width: 5px;
     }
+
 </style>

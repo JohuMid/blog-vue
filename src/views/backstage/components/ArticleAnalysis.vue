@@ -82,14 +82,14 @@
           type3: 0,
           type4: 0,
           type5: 0,
+          type6: 0,
         },
-        countData:{
-          countList:[],
+        countData: {
+          countList: [],
           dateList: []
-
         },
-        addtopicData:{
-          addtopicList:[]
+        addtopicData: {
+          addtopicList: []
         }
 
       }
@@ -97,7 +97,7 @@
     created() {
       this.init();
     },
-    mounted()   {
+    mounted() {
       this.collectOptions = {
         tooltip: {
           trigger: 'item',
@@ -202,7 +202,7 @@
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['娱乐', '生活', '互联网', '科技', '综合']
+          data: []
         },
         series: [
           {
@@ -210,13 +210,7 @@
             type: 'pie',
             radius: '55%',
             center: ['50%', '50%'],
-            data: [
-              {value: this.typeData.type1, name: '娱乐'},
-              {value: this.typeData.type2, name: '生活'},
-              {value: this.typeData.type3, name: '互联网'},
-              {value: this.typeData.type4, name: '科技'},
-              {value: this.typeData.type5, name: '综合'},
-            ],
+            data: [],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -244,6 +238,17 @@
         series: [{
           name: '文章数量',
           data: this.countData.countList,
+          markPoint: {
+            data: [
+              {type: 'max', name: '最大值'},
+              {type: 'min', name: '最小值'}
+            ]
+          },
+          markLine: {
+            data: [
+              {type: 'average', name: '平均值'}
+            ]
+          },
           type: 'line',
           smooth: true
         }]
@@ -251,7 +256,8 @@
       this.addtopicOptions = {
         xAxis: {
           type: 'category',
-          data: this.countData.dateList
+          data: this.countData.dateList,
+
         },
         yAxis: {
           type: 'value'
@@ -265,6 +271,17 @@
         series: [{
           name: '新增文章数量',
           data: this.addtopicData.topicList,
+          markPoint: {
+            data: [
+              {type: 'max', name: '最大值'},
+              {type: 'min', name: '最小值'}
+            ]
+          },
+          markLine: {
+            data: [
+              {type: 'average', name: '平均值'}
+            ]
+          },
           type: 'line',
         }]
       }
@@ -272,38 +289,58 @@
     watch: {
       collectData: {
         handler(newVal, oldVal) {
-          this.$refs.chart1.options.series[0].data[0].value = this.collectData.collect1
-          this.$refs.chart1.options.series[0].data[1].value = this.collectData.collect2
-          this.$refs.chart1.options.series[0].data[2].value = this.collectData.collect3
-          this.$refs.chart1.options.series[0].data[3].value = this.collectData.collect4
+
+          let count = 0
+          for (let key in this.collectData) {
+            count++
+          }
+          for (let i = 0; i < count; i++) {
+            this.$refs.chart1.options.series[0].data[i].value = this.collectData['collect' + (i + 1)];
+          }
         },
         deep: true //对象内部属性的监听，关键。
       },
       chatData: {
         handler(newVal, oldVal) {
-          this.$refs.chart2.options.series[0].data[0].value = this.chatData.chat1;
-          this.$refs.chart2.options.series[0].data[1].value = this.chatData.chat2;
-          this.$refs.chart2.options.series[0].data[2].value = this.chatData.chat3;
-          this.$refs.chart2.options.series[0].data[3].value = this.chatData.chat4;
+
+          let count = 0
+          for (let key in this.chatData) {
+            count++
+          }
+
+          for (let i = 0; i < count; i++) {
+            this.$refs.chart2.options.series[0].data[i].value = this.chatData['chat' + (i + 1)];
+          }
         },
         deep: true //对象内部属性的监听，关键。
       },
       dateData: {
         handler(newVal, oldVal) {
-          this.$refs.chart3.options.series[0].data[0].value = this.dateData.date1;
-          this.$refs.chart3.options.series[0].data[1].value = this.dateData.date2;
-          this.$refs.chart3.options.series[0].data[2].value = this.dateData.date3;
-          this.$refs.chart3.options.series[0].data[3].value = this.dateData.date4;
+
+          let count = 0
+          for (let key in this.dateData) {
+            count++
+          }
+
+          for (let i = 0; i < count; i++) {
+            this.$refs.chart3.options.series[0].data[i].value = this.dateData['date' + (i + 1)];
+          }
+
         },
         deep: true //对象内部属性的监听，关键。
       },
       typeData: {
         handler(newVal, oldVal) {
-          this.$refs.chart4.options.series[0].data[0].value = this.typeData.type1;
-          this.$refs.chart4.options.series[0].data[1].value = this.typeData.type2;
-          this.$refs.chart4.options.series[0].data[2].value = this.typeData.type3;
-          this.$refs.chart4.options.series[0].data[3].value = this.typeData.type4;
-          this.$refs.chart4.options.series[0].data[4].value = this.typeData.type5;
+          let count = 0
+          for (let key in this.typeData) {
+            count++
+          }
+
+
+          for (let i = 0; i < count; i++) {
+            this.$refs.chart4.options.series[0].data[i]['value'] = this.typeData['type' + (i + 1)];
+            this.$refs.chart4.options.series[0].data[i]['name'] = this.$refs.chart4.options.legend.data[i]
+          }
         },
         deep: true //对象内部属性的监听，关键。
       },
@@ -317,46 +354,41 @@
       addtopicData: {
         handler(newVal, oldVal) {
           this.$refs.chart6.options.series[0].data = this.addtopicData.addtopicList;
-          this.$refs.chart6.options.xAxis.data = [this.gettime(6),this.gettime(5), this.gettime(4), this.gettime(3), this.gettime(2), this.gettime(1), this.gettime(0)]
+          this.$refs.chart6.options.xAxis.data = [this.gettime(6), this.gettime(5), this.gettime(4), this.gettime(3), this.gettime(2), this.gettime(1), this.gettime(0)]
         },
         deep: true //对象内部属性的监听，关键。
       },
     },
-    methods:{
+    methods: {
       async init() {
         let res = await totalTopic();
 
         if (res.err_code === 0) {
           let res1 = res.results1;
 
-          this.collectData.collect1 = res1[0]
-          this.collectData.collect2 = res1[1]
-          this.collectData.collect3 = res1[2]
-          this.collectData.collect4 = res1[3]
+          for (let i = 0; i < res1.length; i++) {
+            this.collectData['collect' + (i + 1)] = res1[i]
+          }
 
           let res2 = res.results2;
 
-          this.chatData.chat1 = res2[0]
-          this.chatData.chat2 = res2[1]
-          this.chatData.chat3 = res2[2]
-          this.chatData.chat4 = res2[3]
+          for (let i = 0; i < res2.length; i++) {
+            this.chatData['chat' + (i + 1)] = res2[i]
+          }
 
           let res3 = res.results3;
 
-          this.dateData.date1 = res3[0]
-          this.dateData.date2 = res3[1]
-          this.dateData.date3 = res3[2]
-          this.dateData.date4 = res3[3]
-
-          console.log(res3);
+          for (let i = 0; i < res3.length; i++) {
+            this.dateData['date' + (i + 1)] = res2[i]
+          }
 
           let res4 = res.results4;
 
-          this.typeData.type1 = res4[0]
-          this.typeData.type2 = res4[1]
-          this.typeData.type3 = res4[2]
-          this.typeData.type4 = res4[3]
-          this.typeData.type5 = res4[4]
+          for (let i = 0; i < res4.length; i++) {
+            this.typeData['type' + (i + 1)] = res4[i].value
+            this.$refs.chart4.options.series[0].data.push({})
+            this.$refs.chart4.options.legend.data.push(res4[i].name)
+          }
 
           let res5 = res.results5;
 

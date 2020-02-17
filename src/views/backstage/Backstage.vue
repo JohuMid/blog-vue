@@ -32,8 +32,14 @@
             <el-col class="leftmenu" :span="4">
                 <el-menu
                         default-active="defaultActive">
+                    <router-link to="/backstage/overview">
+                        <el-menu-item index="1">
+                            <i class="el-icon-set-up"></i>
+                            <span slot="title">概览</span>
+                        </el-menu-item>
+                    </router-link>
 
-                    <el-submenu index="1">
+                    <el-submenu index="2">
                         <template slot="title">
                             <i class="el-icon-user"></i>
                             <span>用户管理</span>
@@ -41,20 +47,20 @@
                         <el-menu-item-group>
                             <template slot="title">用户</template>
                             <router-link to="/backstage/usermanage">
-                                <el-menu-item index="1-1">用户管理</el-menu-item>
+                                <el-menu-item index="2-1">用户管理</el-menu-item>
                             </router-link>
                             <router-link to="/backstage/useranalysis">
-                                <el-menu-item index="1-2">用户数据分析</el-menu-item>
+                                <el-menu-item index="2-2">用户数据分析</el-menu-item>
                             </router-link>
                             <router-link to="/backstage/useraction">
-                                <el-menu-item index="1-3">用户行为分析</el-menu-item>
+                                <el-menu-item index="2-3">用户行为分析</el-menu-item>
                             </router-link>
 
                         </el-menu-item-group>
                     </el-submenu>
 
 
-                    <el-submenu index="2">
+                    <el-submenu index="3">
                         <template slot="title">
                             <i class="el-icon-tickets"></i>
                             <span>文章管理</span>
@@ -62,35 +68,41 @@
                         <el-menu-item-group>
                             <template slot="title">文章</template>
                             <router-link to="/backstage/articlemanage">
-                                <el-menu-item index="2-1">文章管理</el-menu-item>
+                                <el-menu-item index="3-1">文章管理</el-menu-item>
                             </router-link>
                             <router-link to="/backstage/articleanalysis">
-                                <el-menu-item index="2-2">文章数据分析</el-menu-item>
+                                <el-menu-item index="3-2">文章数据分析</el-menu-item>
                             </router-link>
                             <router-link to="/backstage/articleaction">
-                                <el-menu-item index="2-3">文章价值分析</el-menu-item>
+                                <el-menu-item index="3-3">文章价值分析</el-menu-item>
                             </router-link>
 
                         </el-menu-item-group>
                     </el-submenu>
 
-                    <el-submenu index="3">
-                        <template slot="title">
+                    <router-link to="/backstage/specialmanage">
+                        <el-menu-item index="4">
                             <i class="el-icon-notebook-1"></i>
-                            <span>专题管理</span>
-                        </template>
-                        <el-menu-item-group>
-                            <template slot="title">专题</template>
-                            <router-link to="/backstage/specialmanage">
-                                <el-menu-item index="3-1">专题管理</el-menu-item>
-                            </router-link>
-                        </el-menu-item-group>
-                    </el-submenu>
+                            <span  slot="title">专题管理</span>
+                        </el-menu-item>
+                    </router-link>
 
                     <router-link to="/backstage/chatmanage">
-                        <el-menu-item index="4">
+                        <el-menu-item index="5">
                             <i class="el-icon-chat-square"></i>
                             <span slot="title">评论管理</span>
+                        </el-menu-item>
+                    </router-link>
+                    <router-link to="/backstage/adminmanage">
+                        <el-menu-item index="6">
+                            <i class="el-icon-s-custom"></i>
+                            <span slot="title">管理员管理</span>
+                        </el-menu-item>
+                    </router-link>
+                    <router-link to="/backstage/operation">
+                        <el-menu-item index="7">
+                            <i class="el-icon-data-analysis"></i>
+                            <span slot="title">运营数据</span>
                         </el-menu-item>
                     </router-link>
                 </el-menu>
@@ -114,9 +126,19 @@
         defaultActive: 1
       }
     },
-    created() {
+    watch: {
+      // 监听路由改变刷新页面
+      $route(to, from) {
+        this.reqUserInfo()
+      }
+    },
+    mounted() {
       // 自动登录
-      this.reqUserInfo();
+      this.reqUserInfo()
+    },
+    created() {
+
+      this.init()
 
     },
     computed: {
@@ -125,6 +147,10 @@
     methods: {
       ...mapMutations(['RESET_USER_INFO']),
       ...mapActions(['reqUserInfo']),
+
+      init() {
+        console.log(this.userInfo);
+      },
 
       async logOut() {
         let res = await getLogOut();
@@ -135,10 +161,7 @@
           this.reload();
         }
       },
-
     },
-
-
   }
 </script>
 

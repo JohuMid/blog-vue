@@ -1,8 +1,9 @@
 <template>
-    <div id="authorrecommend">
+    <div id="authorrecommend" >
         <el-row :gutter="20">
             <el-col :span="14" :offset="5">
-                <el-card style="margin-bottom: 30px;" :style="{ 'background-image': 'url(' +require('./../../../../src/assets/register.png') + ')','background-size':'100%,100%','background-position':'center' }">
+                <el-card style="margin-bottom: 30px;"
+                         :style="{ 'background-image': 'url(' +require('./../../../../src/assets/register.png') + ')','background-size':'100%,100%','background-position':'center' }">
                     <span style="color: white;font-weight: bolder;font-size: 20px">推荐作者</span>
 
                 </el-card>
@@ -25,8 +26,9 @@
                                             style="margin-top: 10px;margin-bottom: 10px;cursor: pointer">
                                         {{item.userName}}
                                         <i v-if="item.userSex=='男'" class="el-icon-male" style="color: #409eff"></i>
-                                        <i v-else-if="item.userSex=='女'" class="el-icon-female" style="color: #ff8774"></i>
-                                        <i v-else ></i>
+                                        <i v-else-if="item.userSex=='女'" class="el-icon-female"
+                                           style="color: #ff8774"></i>
+                                        <i v-else></i>
                                     </router-link>
 
                                     <p style="margin-bottom: 20px;">{{item.userStatement}}</p>
@@ -92,7 +94,7 @@
     name: "AuthorRecommend",
     data() {
       return {
-        userRecommendList: []
+        userRecommendList: [],
       }
     },
     created() {
@@ -112,8 +114,10 @@
           console.log('已经登录');
           let res = await getValueUser(this.userInfo.uId)
 
-          if (res.err_code === 0) {
+          if(res.err_code === 0)
+          {
             this.userRecommendList = res.results
+
           }
 
         } else {
@@ -183,8 +187,13 @@
 </script>
 
 <style scoped>
+    #authorrecommend{
+        width: 100%;
+        height: 100%;
+    }
     .content {
         margin-bottom: 30px;
     }
+
 
 </style>

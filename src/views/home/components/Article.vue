@@ -19,7 +19,7 @@
                                                         v-for="tag in dynamicTags"
                                                         :disable-transitions="false"
                                                         @click="tagPage(tag)">
-                                                    {{tag}}
+                                                    {{referWord(tag)}}
                                                 </el-tag>
                                             </p>
                                         </div>
@@ -114,6 +114,55 @@
                         <div id="main" style="width: 270px;height: 270px;"></div>
                     </div>
                 </el-col>
+                <el-col :span="12" :offset="4">
+                    <div class="grid-content list-shadow word">
+                        <!-- 推荐阅读-->
+                        <el-row :gutter="20">
+                            <h4 style="display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;border-left: 4px solid #409eff;margin-left: 50px;padding-left: 6px;">推荐阅读</h4>
+                            <el-col :span="22" :offset="1">
+                                <li v-for="(item , index) in readMoreList" :key="item.tId">
+                                    <el-row>
+                                        <el-col :span="24">
+                                            <div class="grid-content">
+                                                <p class="title">
+                                                    <el-link type="primary">
+                                                        <router-link
+                                                                tag="h2"
+                                                                style="font-weight: 700"
+
+                                                                :to="`/navbar/article/`+item.tId+``"
+                                                                class="media-heading">
+                                                            {{item.tTopic}}
+                                                        </router-link>
+                                                    </el-link>
+                                                </p>
+                                                <p class="summary">
+                                                    {{item.tWords+'...'}}
+                                                </p>
+                                                <p class="footnote">
+                                                    <el-avatar :size="25"
+                                                               :src="imgBaseUrl+item.userAvatar"
+                                                               alt="...">
+                                                    </el-avatar>
+                                                    <router-link
+                                                            class="users"
+                                                            :to="`/navbar/users/`+item.uId+``">
+                                                        <span style="color: #409eff;margin-right: 10px;margin-left: 10px;">{{item.userName}}</span>
+                                                    </router-link>
+                                                    发布
+                                                    <span style="margin-left: 10px;">{{item.tTime | timeFormatSimple}}</span>
+                                                </p>
+                                            </div>
+                                        </el-col>
+
+                                    </el-row>
+                                    <el-divider></el-divider>
+                                </li>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
             </el-row>
         </div>
     </div>
@@ -126,7 +175,8 @@
     nextAllTopic,
     userCollect,
     userIsStar,
-    userCancelCollect
+    userCancelCollect,
+    getReadmore, special
   } from "../../../service/api";
   import {Message} from "element-ui";
   import Chat from "./children/Chat";
@@ -154,6 +204,9 @@
         inputVisible: false,
         //  文章列表
         topicList: [],
+        // 阅读更多列表
+        readMoreList: [],
+        fits: ['cover'],
         //  定时器
         timer: {},
         //  窗口高度
@@ -184,11 +237,12 @@
           'background-size': '140px,100%',
           'background-position': 'top right',
           'background-repeat': 'no-repeat'
-        }]
+        }],
+        refer: [],
       };
     },
     components: {
-      Chat
+      Chat,
     },
     computed: {
       ...mapState(["userInfo"])
@@ -281,25 +335,23 @@
       },
       // 获取文章详细信息
       async getTopic() {
-        // let topicIndex = getStore('topicIndex')
+
         let res = await getTopicDetail(this.$route.params.tId);
 
         if (res.err_code === 0) {
-
-          console.log(res.words);
           // 文章详细信息
           let results = JSON.parse(res.results)[0];
 
-          let model = JSON.parse(results.tModel)[0];
+          let model = JSON.parse(results.tModel);
 
           this.topicList = JSON.parse(res.list)
 
           this.dynamicTags = []
 
-          for (let key in model) {
-            if (model[key] === 1) {
-              this.dynamicTags.push(key)
-            }
+          for (let i = 0; i < model.length; i++) {
+
+            this.dynamicTags.push(model[i])
+
           }
 
           let styleReg = /style\s*?=\s*?(['"])[\s\S]*?\1/g;
@@ -307,7 +359,7 @@
           let heightReg = /height\s*?=\s*?(['"])[\s\S]*?\1/g;
 
           // 清除文章字符串的行内样式
-          this.contents = (results.tContents).replace(styleReg, '').replace(widthReg, '').replace(heightReg, '');
+          this.contents = (results.tContents).replace(widthReg, '').replace(heightReg, '');
 
           // 获取文章头图
           /*var reg = /<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\1[^>]*?\/?\s*>/;
@@ -327,8 +379,6 @@
           this.userName = results.userName;
           this.uId = results.uId;
           this.tRecommend = results.tRecommend
-          console.log(results.tRecommend);
-
 
           this.avatarSrc = this.imgBaseUrl + results.userAvatar;
 
@@ -345,6 +395,14 @@
 
         // 加载云图
         this.echartsCloud(word)
+        // 加载阅读更多
+        this.reqReadMore()
+
+        let res1 = await special()
+        if (res1.err_code === 0) {
+          this.refer = JSON.parse(res1.refer)
+
+        }
 
         // 记录浏览时间，修订用户模型
         let model = JSON.parse(localStorage.getItem('model'))
@@ -396,6 +454,7 @@
           this.chatNum = data;
         }
       },
+      // 点击标签
       tagPage(tag) {
         // console.log(tag);
 
@@ -480,10 +539,26 @@
         }
         maskImage.src = require('./../../../../src/assets/mask.png');
       },
-      scrollEvent(e) {
-        console.log(e)
+      //  阅读更多
+      async reqReadMore() {
+        let res = await getReadmore(this.topic);
+        if (res.err_code === 0) {
+          let list = JSON.parse(res.results);
+          list.shift();
+          this.readMoreList = list;
+        }
       },
+      // 翻译为中文
+      referWord(word) {
+        console.log(word);
 
+        for (let i = 0; i < this.refer.length; i++) {
+          if (word == this.refer[i].value) {
+            return this.refer[i].label
+          }
+        }
+
+      },
     }
 
   };

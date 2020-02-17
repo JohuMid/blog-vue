@@ -17,6 +17,7 @@ import '@/config/filters'
 
 // 引入无限滚动
 import infiniteScroll from 'vue-infinite-scroll'
+
 Vue.use(infiniteScroll)
 
 
@@ -46,12 +47,11 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 
-
 import hljs from 'highlight.js'
 import 'highlight.js/styles/googlecode.css' //样式文件
-Vue.directive('highlight',function (el) {
+Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code');
-  blocks.forEach((block)=>{
+  blocks.forEach((block) => {
     hljs.highlightBlock(block)
   })
 })
@@ -65,11 +65,18 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/title.js'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
+
 Vue.component('chart', ECharts)
 
 // 词云图
 import 'echarts'
 import 'echarts-wordcloud'
+
+
+import 'echarts-gl'
+
+import 'echarts/lib/chart/line'
+
 
 new Vue({
   router,

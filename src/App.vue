@@ -24,11 +24,12 @@
     data() {
       return {
         style: '',
-        isRouterAlive: true
+        isRouterAlive: true,
       }
     },
     methods: {
       initBg() {
+
         $(function () {
           // 初始化 传入dom id
           var victor = new Victor("container", "output");

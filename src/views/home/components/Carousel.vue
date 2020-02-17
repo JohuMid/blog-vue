@@ -23,8 +23,8 @@
             <el-col :span="4" :offset="16" style="position: absolute;width: 280px;">
                 <div>
                     <router-link
-                    to="/navbar/tagpage/娱乐">
-                        <el-card class="box-card" style="background: #409eff">推荐栏目<span> </span><img style="width: 50px;position: absolute;right: 20px;top: 5px;" src="./../../../assets/tag.png" alt=""></el-card>
+                    to="/navbar/tagpage/yule">
+                        <el-card class="box-card" style="background: #409eff">推荐专题<span> </span><img style="width: 50px;position: absolute;right: 20px;top: 5px;" src="./../../../assets/tag.png" alt=""></el-card>
                     </router-link>
                     <router-link
                             to="/navbar/authorrecommend"

@@ -246,6 +246,17 @@
         series: [{
           name: '注册用户数量',
           data: this.countData.countList,
+          markPoint: {
+            data: [
+              {type: 'max', name: '最大值'},
+              {type: 'min', name: '最小值'}
+            ]
+          },
+          markLine: {
+            data: [
+              {type: 'average', name: '平均值'}
+            ]
+          },
           type: 'line',
           smooth: true
         }]
@@ -267,6 +278,17 @@
         series: [{
           name: '新增用户数量',
           data: this.adduserData.countList,
+          markPoint: {
+            data: [
+              {type: 'max', name: '最大值'},
+              {type: 'min', name: '最小值'}
+            ]
+          },
+          markLine: {
+            data: [
+              {type: 'average', name: '平均值'}
+            ]
+          },
           type: 'line',
         }]
       }
@@ -334,8 +356,6 @@
           this.sexData.female = res1[0].female
           this.sexData.male = res1[0].male
 
-          /*console.log(this.sexData.female);
-          console.log(this.sexData.male);*/
 
           let res2 = (res.results2)
 

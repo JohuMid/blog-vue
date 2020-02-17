@@ -4,11 +4,10 @@
             <router-link to="/" tag="el-menu-item" index="1">
                 <img style="width: 50px;" src="./../../assets/logo.png" alt="">
                 <h2 class="title">Superman Can Not Fly</h2>
-
             </router-link>
 
             <el-col :span="4" style="line-height: 60px;position: relative;">
-                <el-input placeholder="请输入内容进行搜索" v-model="searchInput" class="input-with-select">
+                <el-input placeholder="搜索" v-model="searchInput" class="input-with-select">
 
                 </el-input>
                 <span class="el-icon-search"
@@ -16,8 +15,7 @@
                       @click="searchList()"></span>
 
             </el-col>
-
-            <el-row v-if="userInfo===null" style="float: right;">
+            <el-row v-if="userInfo===null||userInfo.token===undefined||userInfo.adminName  " style="float: right;">
 
                 <el-col :span="12">
                     <div class="grid-content bg-purple">
@@ -86,12 +84,26 @@
                                     <router-link :to="'/navbar/article/'+item.tId">
                                         《{{item.tTopic}}》
                                     </router-link>
-                                    的评论被
+                                    中的评论被
                                     <router-link :to="'/navbar/users/'+item.uId">
                                         {{item.userName}}
                                     </router-link>
                                     {{item.type|aboutWord}}
                                     了
+                                </div>
+                                <div v-else-if="item.type=='pass'">
+                                    你的文章
+                                    <router-link :to="'/navbar/article/'+item.tId">
+                                        《{{item.tTopic}}》
+                                    </router-link>
+                                    已经通过审核
+                                </div>
+                                <div v-else-if="item.type=='nopass'">
+                                    你的文章
+                                    <router-link :to="'/navbar/article/'+item.tId">
+                                        《{{item.tTopic}}》
+                                    </router-link>
+                                    未通过审核，请重新编辑后发布
                                 </div>
 
                             </el-dropdown-item>
@@ -149,7 +161,7 @@
 <script>
   import ArticleList from "../home/ArticleList";
   import Search from "../home/components/Search";
-  import {getLogOut} from "../../service/api";
+  import {getLogOut, special} from "../../service/api";
   import {mapState, mapMutations, mapActions} from 'vuex'
   import {Message} from "element-ui";
 
@@ -167,19 +179,15 @@
         // 是否显示你没有消息
         noAbout: false,
         // 搜索内容
-        searchInput: ''
+        searchInput: '',
       };
     },
-    created() {
+    mounted() {
       this.createModel()
     },
-    mounted() {
+    created() {
       // 自动登录
       this.reqUserInfo()
-
-      if (this.userInfo) {
-        this.$socket.emit('online', this.userInfo.uId)
-      }
     },
     computed: {
       ...mapState(['userInfo']),
@@ -202,11 +210,27 @@
           this.reload();
         }
       },
-      // 如果登录，创建模型
-      createModel() {
+      // 创建模型
+      async createModel() {
+        // console.log(this.userInfo);
+
+        console.log('请求一次');
+
+        let res = await special()
+        if (res.err_code === 0) {
+          let refer = JSON.parse(res.refer)
+
+          let obj = [{}]
+
+          for (let i = 0; i < refer.length; i++) {
+            obj[0][refer[i].value] = 0
+          }
+          localStorage.model = JSON.stringify(obj)
+        }
+
         if (this.userInfo) {
           if (this.userInfo.token) {
-            localStorage.model = '[{"娱乐":0,"汽车":0,"职场":0,"科技":0,"房产":0,"生活":0,"互联网":0,"创投":0,"游戏":0,"人物":0,"评测":0,"电影":0,"计算机":0,"体育":0,"智能":0,"综合":0}]';
+            this.$socket.emit('online', this.userInfo.uId)
           }
         }
       },
@@ -220,7 +244,6 @@
       },*/
       // 搜索内容
       searchList() {
-
         if (!(this.searchInput.trim())) {
           Message('请输入内容后搜索!');
         } else {
@@ -240,7 +263,7 @@
     sockets: {
       connection: function (data) {
 
-        // console.log(data);
+        console.log(data);
 
         // 有消息则填充消息通知表
         // 没消息则显示：你暂时没有消息

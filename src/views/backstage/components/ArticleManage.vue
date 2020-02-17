@@ -27,7 +27,7 @@
                     <el-table-column
                             prop="tModel"
                             width="100"
-                            label="文章标签">
+                            label="文章专题">
                     </el-table-column>
                     <el-table-column
                             prop="tTime"
@@ -58,6 +58,16 @@
                             </el-button>
                         </template>
                     </el-table-column>
+                    <el-table-column
+                            width="110"
+                            label="状态">
+                        <template slot-scope="scope">
+                            <el-tag type="warning" v-if="Number(scope.row.tCheck)===0">审核中</el-tag>
+                            <el-tag type="success" v-else-if="Number(scope.row.tCheck)===1">审核通过</el-tag>
+                            <el-tag type="danger" v-else-if="Number(scope.row.tCheck)===2">审核不通过</el-tag>
+                        </template>
+                    </el-table-column>
+
 
                     <el-table-column
                             prop="tRecommend"
@@ -86,6 +96,17 @@
                                     placeholder="输入文章名搜索"/>
                         </template>
                         <template slot-scope="scope">
+                            <el-button v-if="scope.row.tSticky===1"
+                                       @click="handleSticky(scope.$index,scope.row.tSticky, scope.row)"
+                                       size="mini"
+                            >取消置顶
+                            </el-button>
+                            <el-button v-else-if="scope.row.tSticky===0"
+                                       type="primary"
+                                       @click="handleSticky(scope.$index,scope.row.tSticky, scope.row)"
+                                       size="mini"
+                            >置顶
+                            </el-button>
                             <el-button
                                     type="danger"
                                     @click="handleDelete(scope.$index, scope.row)"
@@ -111,21 +132,22 @@
 
         <!--            弹出框文章详情-->
         <el-dialog title="文章详情" :visible.sync="dialogFormVisible">
+
             <div class="ql-container ql-snow">
                 <div class="ql-editor" v-html="tContents" v-highlight>
-                    <!--                                            正文开始-->
+                    <!--正文开始-->
                 </div>
             </div>
 
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button type="primary" @click="closeDialog()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-  import {getTopicsData, getTopicDetail, deleteTopic, rate} from "../../../service/api";
+  import {getTopicsData, getTopicDetail, deleteTopic, rate, stickyTopic} from "../../../service/api";
 
 
   export default {
@@ -148,7 +170,7 @@
         search: '',
         //  评分属性
         value2: null,
-        colors: { 2: '#f2d3a3', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
+        colors: {2: '#f2d3a3', 4: {value: '#F7BA2A', excluded: true}, 5: '#FF9900'}
       }
     },
     created() {
@@ -169,6 +191,8 @@
 
         this.tableData = JSON.parse(res.results)
 
+        console.log(this.tableData);
+
         var num = JSON.parse(res.num)
 
         this.total = num[0]['COUNT(*)']
@@ -187,9 +211,18 @@
         let res = await getTopicDetail(row.tId)
 
         if (res.err_code === 0) {
-          this.tContents = (JSON.parse(res.results)[0].tContents)
+          // this.tContents = (JSON.parse(res.results)[0].tContents)
+
+          let styleReg = /style\s*?=\s*?(['"])[\s\S]*?\1/g;
+          let widthReg = /width\s*?=\s*?(['"])[\s\S]*?\1/g;
+          let heightReg = /height\s*?=\s*?(['"])[\s\S]*?\1/g;
+
+          // 清除文章字符串的行内样式
+          this.tContents = (JSON.parse(res.results)[0].tContents).replace(styleReg, '').replace(widthReg, '').replace(heightReg, '');
+
         }
       },
+      // 删除文章
       handleDelete(index, row) {
 
         this.$confirm('确定要删除这篇文章?(此过程不可逆)', '提示', {
@@ -210,12 +243,27 @@
           console.log('啥都没做')
         });
       },
+      async handleSticky(index, flag, row) {
+        console.log(flag);
+        let res = await stickyTopic(flag, row.tId)
+        if (res.err_code === 0) {
+          if (Number(flag) === 0) {
+            this.tableData[index].tSticky = 1
+          } else if (Number(flag) === 1) {
+            this.tableData[index].tSticky = 0
+          }
+        }
+      },
       async change(value, row) {
 
         let res = await rate(row.tId, value);
         if (res.err_code === 0) {
 
         }
+      },
+      closeDialog() {
+        this.dialogFormVisible = false;
+        this.tContents=''
       }
     }
   }

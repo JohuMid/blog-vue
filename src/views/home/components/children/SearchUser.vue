@@ -56,15 +56,21 @@
     name: "SearchUser",
     data() {
       return {
-        allUserList: [],
+        searchData: [],
         fits: ['cover'],
       }
     },
 
     created() {
-      this.search()
+      this.searchUser()
     },
-    computed: {
+    watch: {
+      // 监听路由改变刷新页面
+      $route(to, from) {
+        this.searchUser();
+      }
+    },
+    /*computed: {
       searchData() {
         let content = this.$route.params.searchInput;
         if (content) {
@@ -76,14 +82,13 @@
         }
         return this.newList;
       }
-    },
+    },*/
     methods: {
-      async search() {
+      async searchUser() {
         // console.log(this.$route.params.searchInput);
-        let res = await getAllUserList()
+        let res = await getAllUserList(this.$route.params.searchInput)
         if (res.err_code === 0) {
-          this.allUserList = JSON.parse(res.results)
-
+          this.searchData = JSON.parse(res.results)
         }
       }
     }

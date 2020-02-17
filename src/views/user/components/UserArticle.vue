@@ -34,6 +34,8 @@
                             </p>
                         </div>
                     </el-col>
+                    <el-tag  v-if="Number(item.tCheck)===0" style="position: absolute;right: 70px;top: 0;">审核中</el-tag>
+                    <el-tag  v-else-if="Number(item.tCheck)===2" style="position: absolute;right: 70px;top: 0;">审核不通过</el-tag>
 
                     <el-button style="float: right; vertical-align: center;margin-right: 20px;" type="text"
                                @click="delTopic(item.tId)">
@@ -115,6 +117,8 @@
           // console.log(res);
           // 文章简要信息
           var results = JSON.parse(res.results)
+
+          console.log(results);
 
           // 文章总数
           var num = JSON.parse(res.num)

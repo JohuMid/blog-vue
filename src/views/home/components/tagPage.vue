@@ -5,13 +5,13 @@
             <el-col :span="16" :offset="4">
                 <el-row>
                     <el-col :span="2" width="25px">
-                        <span class="el-icon-discount tag">{{this.$route.params.tag}}</span>
+                        <span class="el-icon-discount tag">{{this.referWord(this.$route.params.tag)}}</span>
                     </el-col>
                     <el-col :span="20" style="margin-bottom: 20px;">
                         <el-card>
 
                             <li class="tagLi" v-for="(item,index) in tagList" :key="index" :class="item.active"><a
-                                    :href="item.link" @click="changeTag()">{{item.name}}</a></li>
+                                    :href="item.link" @click="changeTag()">{{item.label}}</a></li>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -89,7 +89,6 @@
                                             :src="item.tHeadImage"
                                             :fit="fits[0]"></el-image>
                                 </el-col>
-
                             </el-col>
                         </el-row>
                         <el-divider></el-divider>
@@ -111,7 +110,7 @@
 </template>
 
 <script>
-  import {tagTopic} from "../../../service/api";
+  import {special, tagTopic} from "../../../service/api";
   import infiniteScroll from 'vue-infinite-scroll'
 
   export default {
@@ -119,21 +118,7 @@
     data() {
       return {
         // 标签列表
-        tagList: [{name: "娱乐", active: false, link: "/#/navbar/tagpage/娱乐"},
-          {name: "汽车", active: false, link: "/#/navbar/tagpage/汽车"},
-          {name: "职场", active: false, link: "/#/navbar/tagpage/职场"},
-          {name: "科技", active: false, link: "/#/navbar/tagpage/科技"},
-          {name: "房产", active: false, link: "/#/navbar/tagpage/房产"},
-          {name: "生活", active: false, link: "/#/navbar/tagpage/生活"},
-          {name: "互联网", active: false, link: "/#/navbar/tagpage/互联网"},
-          {name: "创投", active: false, link: "/#/navbar/tagpage/创投"},
-          {name: "游戏", active: false, link: "/#/navbar/tagpage/游戏"},
-          {name: "评测", active: false, link: "/#/navbar/tagpage/评测"},
-          {name: "电影", active: false, link: "/#/navbar/tagpage/电影"},
-          {name: "计算机", active: false, link: "/#/navbar/tagpage/计算机"},
-          {name: "体育", active: false, link: "/#/navbar/tagpage/体育"},
-          {name: "智能", active: false, link: "/#/navbar/tagpage/智能"},
-          {name: "综合", active: false, link: "/#/navbar/tagpage/综合"}],
+        tagList: [],
         tagData: [],
         fits: ['cover'],
         loading: false,
@@ -141,6 +126,7 @@
         busy: true,
         isLoading: true,
         total: 0,
+        refer: []
       }
     },
     directives: {
@@ -149,7 +135,8 @@
     created() {
       // 加载防止闪烁
       this.$emit('func', '我好了');
-      this.initTag()
+      this.getSpecial()
+
     },
     watch: {
       $route(to, from) {
@@ -159,6 +146,22 @@
       }
     },
     methods: {
+      async getSpecial() {
+        let res = await special()
+        if (res.err_code === 0) {
+          var refer = JSON.parse(res.refer)
+
+          this.refer = refer
+
+          for (var i = 0; i < refer.length; i++) {
+            refer[i]['active'] = false;
+            refer[i]['link'] = "/#/navbar/tagpage/" + refer[i].value
+
+          }
+          this.tagList = refer
+        }
+        this.initTag()
+      },
       async initTag() {
 
         let res = await tagTopic(this.$route.params.tag, this.page);
@@ -180,13 +183,12 @@
           this.$emit('func', '我好了')
           //  动态标签上色
           for (let i = 0; i < this.tagList.length; i++) {
-            if (this.tagList[i].name == this.$route.params.tag) {
+            if (this.tagList[i].value == this.$route.params.tag) {
               this.tagList[i].active = "active"
             } else {
               this.tagList[i].active = false
             }
           }
-
         }
       },
       loadMore() {
@@ -203,7 +205,16 @@
         setTimeout(function () {
           _this.initTag()
         }, 5)
-      }
+      },
+      // 翻译为英文
+      referWord(word) {
+
+        for (let i = 0; i < this.refer.length; i++) {
+          if (word == this.refer[i].value) {
+            return this.refer[i].label
+          }
+        }
+      },
     }
   }
 </script>

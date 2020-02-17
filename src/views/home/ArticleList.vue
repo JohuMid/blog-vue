@@ -24,8 +24,11 @@
 
                                                             :to="`/navbar/article/`+item.tId+``"
                                                             class="media-heading">
+                                                        <img v-if="Number(item.tSticky) ===1" title="置顶" style="width: 1.5em;position: absolute;left: -30px;" src="./../../../src/assets/sticky.png" alt="">
+
                                                         <i v-if="Number(item.tRecommend)!==0" class="el-icon-star-on"
-                                                           style="color: #409eff"></i>{{item.tTopic}}
+                                                           style="color: #409eff"></i>
+                                                        {{item.tTopic}}
                                                     </router-link>
                                                 </el-link>
                                             </p>
@@ -58,7 +61,8 @@
                                                             style="font-weight: 600"
                                                             :to="`/navbar/article/`+item.tId+``"
                                                             class="media-heading">
-                                                        <i v-if="Number(item.tRecommend)!==0" class="el-icon-star-on"
+                                                        <img v-if="Number(item.tSticky) ===1" title="置顶" style="width: 1.5em;position: absolute;left: -30px;" src="./../../../src/assets/sticky.png" alt="">
+                                                        <i  v-if="Number(item.tRecommend)!==0" class="el-icon-star-on"
                                                            style="color: #409eff"></i>
                                                         {{item.tTopic}}
                                                     </router-link>
@@ -167,7 +171,18 @@
         // 文章简要信息
         var results = JSON.parse(res.results)
 
-        this.topicList = this.topicList.concat(results);
+        if (res.sticky ===undefined){
+          this.topicList = this.topicList.concat(results);
+        }else {
+          // 文章置顶信息
+          var sticky = JSON.parse(res.sticky)
+
+          for (let i=0;i<sticky.length;i++){
+            this.topicList.unshift(sticky[i])
+          }
+          this.topicList = this.topicList.concat(results);
+
+        }
 
         if (Number(this.topicList.length) === this.total) {
           this.isLoading = false

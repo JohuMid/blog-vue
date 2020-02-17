@@ -45,8 +45,15 @@ import UserManage from "../views/backstage/components/UserManage";
 import ArticleAnalysis from "../views/backstage/components/ArticleAnalysis";
 import ArticleAction from "../views/backstage/components/ArticleAction";
 
+// 概览
+import Overview from "../views/backstage/components/Overview";
+
 // 专题分析
 import SpecialManage from "../views/backstage/components/SpecialManage";
+// 管理员管理
+import AdminManage from "../views/backstage/components/AdminManage";
+// 运营数据
+import Operation from "../views/backstage/components/Operation";
 
 Vue.use(VueRouter)
 
@@ -81,7 +88,8 @@ export default new VueRouter({
       name: 'backstage',
       component: Backstage,
       children: [
-        {path: '/backstage', redirect: '/backstage/usermanage'},
+        {path: '/backstage', redirect: '/backstage/overview'},
+        {path: 'overview', name: 'overview', component: Overview,},
         {path: 'usermanage', name: 'usermanage', component: UserManage,},
         {path: 'useranalysis', name: 'useranalysis', component: UserAnalysis,},
         {path: 'useraction', name: 'useraction', component: UserAction,},
@@ -93,6 +101,8 @@ export default new VueRouter({
         {path: 'specialmanage', name: 'specialmanage', component: SpecialManage},
         {path: 'chatmanage/:tId', name: 'chatmanage', component: ChatManage},
         {path: 'chatmanage', name: 'chatmanage', component: ChatManage},
+        {path: 'adminmanage', name: 'adminmanage', component: AdminManage},
+        {path: 'operation', name: 'operation', component: Operation},
       ]
     },
 

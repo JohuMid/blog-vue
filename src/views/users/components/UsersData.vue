@@ -128,8 +128,6 @@
           }
         } else {
           let res = await getUserAllData(this.$route.params.uId)
-
-
           // console.log(res);
 
           var results = JSON.parse(res.results)[0];
@@ -143,8 +141,6 @@
           this.avatarSrc = this.imgBaseUrl + results.userAvatar + ``
           this.form.class = results.userRegDate
         }
-
-
       },
       // 关注，取消关注
       async attention() {
