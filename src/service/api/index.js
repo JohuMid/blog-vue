@@ -171,14 +171,23 @@ export const getTopicsData = (uId, pageNum, currentPage) => ajax(LOCAL_BASE_URL 
   pageNum,
   currentPage
 }, 'POST');
+// 获取评论数据
 export const getChatsData = (tId, pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/getchatsdata', {
   tId,
+  pageNum,
+  currentPage
+}, 'POST');
+// 获取回复数据
+export const getReplysData = (pageNum, currentPage) => ajax(LOCAL_BASE_URL + '/getreplysdata', {
   pageNum,
   currentPage
 }, 'POST');
 
 // 删除评论
 export const deleteChat = (rId) => ajax(LOCAL_BASE_URL + '/delchat', {rId});
+// 删除回复
+export const deleteReply = (rcId) => ajax(LOCAL_BASE_URL + '/delreply', {rcId});
+
 // 删除文章
 export const deleteTopic = (tId) => ajax(LOCAL_BASE_URL + '/deltopic', {tId});
 // 专题管理
@@ -228,7 +237,7 @@ export const reduceSpecial = (value) => ajax(LOCAL_BASE_URL + '/reducespecial', 
 // 获取一级专题
 export const firstFloor = () => ajax(LOCAL_BASE_URL + '/firstfloor', {})
 // 运营数据
-export const operationData = () => ajax(LOCAL_BASE_URL + '/operationdata', {},'POST')
+export const operationData = () => ajax(LOCAL_BASE_URL + '/operationdata', {}, 'POST')
 
 
 

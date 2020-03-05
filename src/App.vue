@@ -13,6 +13,13 @@
   import {Victor} from './plugins/background/vector'
 
   export default {
+    // 服务器端应该修改
+    mounted() {
+
+      this.$router.afterEach((to, from, next) => {
+        window.scrollTo(0, 0)
+      })
+    },
     provide() {
       return {
         reload: this.reload
@@ -49,7 +56,6 @@
     #app {
         width: 100%;
         height: 100%;
-        overflow-x: hidden;
     }
 
     * {

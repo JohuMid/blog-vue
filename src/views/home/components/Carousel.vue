@@ -51,7 +51,6 @@
     data() {
       return {
         collectPlaceImgUrl: [],
-        chatPlaceImgUrl: [],
       }
     },
     created() {
@@ -62,10 +61,11 @@
         let res = await getBannerTopic()
         if (res.err_code === 0) {
           let res1 = JSON.parse(res.results1)
-          let res2 = JSON.parse(res.results2)
 
           this.collectPlaceImgUrl = res1
-          this.chatPlaceImgUrl = res2
+
+          console.log(res1);
+
 
         }
       }

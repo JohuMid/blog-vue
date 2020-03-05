@@ -10,9 +10,9 @@
                                 <el-row>
                                     <el-col :span="23">
                                         <div class="grid-content">
-                                            <h1 v-cloak>{{topic}}</h1>
+                                            <h1 v-cloak>{{topicData.tTopic}}</h1>
                                             <p v-cloak style="font-size: 14px; line-height: 22px;">
-                                                {{time|timeFormatSimple}}
+                                                {{topicData.tTime|timeFormatSimple}}
                                                 <span style="margin-left: 10px;margin-right: 10px;">发布</span>
                                                 <el-tag
                                                         :key="tag"
@@ -80,7 +80,7 @@
                         <el-row :gutter="20">
                             <el-col :span="12" style="width: 50px;text-align: center;margin-left: 20px;">
                                 <div class="grid-content">
-                                    <el-avatar :size="40" :src="avatarSrc"
+                                    <el-avatar :size="40" :src="topicData.userAvatar"
                                                shape="square"></el-avatar>
                                 </div>
                             </el-col>
@@ -89,7 +89,7 @@
                                     <router-link
                                             :to="`/navbar/users/`+this.uId+``"
                                             tag="span">
-                                        <p v-cloak>{{userName}}</p>
+                                        <p v-cloak>{{topicData.userName}}</p>
                                     </router-link>
                                 </div>
                             </el-col>
@@ -186,15 +186,14 @@
     name: "Article",
     data() {
       return {
+        // 文章详细信息
+        topicData: {},
         avatarSrc:
           "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         isStar: false,
         class: ["el-icon-star-on", "el-icon-star-off"],
         uId: 0,
-        topic: "",
         contents: "",
-        time: "",
-        userName: "",
         chatNum: 0,
         collectNum: 0,
         // 收藏提示
@@ -311,25 +310,28 @@
       },
       // 判断当前文章是否被当前用户收藏
       async isUserStar() {
-        if (this.userInfo.uId) {
-          let res = await userIsStar(this.userInfo.uId, this.$route.params.tId);
+        // 服务器端修改
+        if (this.userInfo){
+          if (this.userInfo.uId) {
+            let res = await userIsStar(this.userInfo.uId, this.$route.params.tId);
 
-          if (res.err_code === 0) {
-            this.isStar = false;
-            var res1 = JSON.parse(res.results);
-            if (!res1[0]) {
-              // console.log('未收藏');
-              this.collectTip = "收藏";
-            } else {
-              this.isStar = true;
-              this.collectTip = "取消收藏";
+            if (res.err_code === 0) {
+              this.isStar = false;
+              var res1 = JSON.parse(res.results);
+              if (!res1[0]) {
+                // console.log('未收藏');
+                this.collectTip = "收藏";
+              } else {
+                this.isStar = true;
+                this.collectTip = "取消收藏";
+              }
+
+              var res2 = JSON.parse(res.results2);
+
+              this.collectNum = res2[0]["COUNT(*)"];
             }
-
-            var res2 = JSON.parse(res.results2);
-
-            this.collectNum = res2[0]["COUNT(*)"];
-          }
-        } else {
+          } else {
+        }
           // console.log('没登录');
         }
       },
@@ -374,13 +376,12 @@
             }*/
           // console.log(insertHtml);
 
-          this.topic = results.tTopic;
-          this.time = results.tTime;
-          this.userName = results.userName;
+          this.topicData = results
+
           this.uId = results.uId;
           this.tRecommend = results.tRecommend
 
-          this.avatarSrc = this.imgBaseUrl + results.userAvatar;
+          this.topicData.userAvatar = this.imgBaseUrl + results.userAvatar;
 
           // 加载防止闪烁
           this.$emit("func", "我好了");
@@ -541,7 +542,7 @@
       },
       //  阅读更多
       async reqReadMore() {
-        let res = await getReadmore(this.topic);
+        let res = await getReadmore(this.topicData.tTopic);
         if (res.err_code === 0) {
           let list = JSON.parse(res.results);
           list.shift();
@@ -550,7 +551,7 @@
       },
       // 翻译为中文
       referWord(word) {
-        console.log(word);
+        // console.log(word);
 
         for (let i = 0; i < this.refer.length; i++) {
           if (word == this.refer[i].value) {

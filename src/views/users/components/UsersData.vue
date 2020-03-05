@@ -180,7 +180,9 @@
       },
       async isUserAttention() {
 
-        if (this.userInfo) {
+        console.log(this.userInfo);
+
+        if (this.userInfo.uId) {
           let res = await userIsAttention(this.userInfo.uId, this.$route.params.uId)
 
           if (res.err_code === 0) {

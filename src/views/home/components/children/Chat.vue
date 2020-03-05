@@ -161,6 +161,7 @@
       },
       // 发表评论
       async topicChat() {
+        console.log(this.userInfo);
 
         if (this.userInfo) {
 
@@ -182,7 +183,7 @@
                 userAvatar: this.userInfo.userAvatar,
                 userName: this.userInfo.userName,
                 rChat: this.form.chat,
-                reply:[]
+                reply: []
               };
 
               // 存储评论状态

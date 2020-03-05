@@ -26,6 +26,8 @@ Vue.filter('timeFormatSimple', (value) => {
 
 })
 
+// 服务器端应该修改
+
 // 计算日期相隔
 Vue.filter('getDateDiff', (dateTimeStamp) => {
 
@@ -40,6 +42,7 @@ Vue.filter('getDateDiff', (dateTimeStamp) => {
   var week = day * 7;
   var halfamonth = day * 15;
   var month = day * 30;
+  var year = month * 12;
 
   var now = new Date().getTime();   //获取当前时间毫秒
   var diffValue = now - dateTimeStamp;//时间差
@@ -55,17 +58,19 @@ Vue.filter('getDateDiff', (dateTimeStamp) => {
   var dayC = diffValue / day;
   var weekC = diffValue / week;
   var monthC = diffValue / month;
-
-  if (monthC >= 1) {
-    result = "" + parseInt(monthC) + "月SCF时刻";
+  var yearC = diffValue / year
+  if (yearC >= 1) {
+    result = "" + parseInt(yearC) + "年SCNF";
+  } else if (monthC >= 1) {
+    result = "" + parseInt(monthC) + "月SCNF";
   } else if (weekC >= 1) {
-    result = "" + parseInt(weekC) + "周SCF时刻";
+    result = "" + parseInt(weekC) + "周SCNF";
   } else if (dayC >= 1) {
-    result = "" + parseInt(dayC) + "天SCF时刻";
+    result = "" + parseInt(dayC) + "天SCNF";
   } else if (hourC >= 1) {
-    result = "" + parseInt(hourC) + "小时SCF时刻";
+    result = "" + parseInt(hourC) + "小时SCNF";
   } else if (minC >= 1) {
-    result = "" + parseInt(minC) + "分钟SCF时刻";
+    result = "" + parseInt(minC) + "分钟SCNF";
   } else
     result = "刚刚";
   return result;

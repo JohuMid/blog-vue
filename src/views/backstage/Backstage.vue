@@ -87,12 +87,22 @@
                         </el-menu-item>
                     </router-link>
 
-                    <router-link to="/backstage/chatmanage">
-                        <el-menu-item index="5">
+                    <el-submenu index="5">
+                        <template slot="title">
                             <i class="el-icon-chat-square"></i>
-                            <span slot="title">评论管理</span>
-                        </el-menu-item>
-                    </router-link>
+                            <span>评论管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <template slot="title">评论</template>
+                            <router-link to="/backstage/chatmanage">
+                                <el-menu-item index="5-1">评论管理</el-menu-item>
+                            </router-link>
+                            <router-link to="/backstage/replymanage">
+                                <el-menu-item index="5-2">回复管理</el-menu-item>
+                            </router-link>
+                        </el-menu-item-group>
+                    </el-submenu>
+
                     <router-link to="/backstage/adminmanage">
                         <el-menu-item index="6">
                             <i class="el-icon-s-custom"></i>

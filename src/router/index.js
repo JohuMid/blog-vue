@@ -54,6 +54,8 @@ import SpecialManage from "../views/backstage/components/SpecialManage";
 import AdminManage from "../views/backstage/components/AdminManage";
 // 运营数据
 import Operation from "../views/backstage/components/Operation";
+// 回复管理
+import ReplyManage from "../views/backstage/components/ReplyManage";
 
 Vue.use(VueRouter)
 
@@ -101,6 +103,7 @@ export default new VueRouter({
         {path: 'specialmanage', name: 'specialmanage', component: SpecialManage},
         {path: 'chatmanage/:tId', name: 'chatmanage', component: ChatManage},
         {path: 'chatmanage', name: 'chatmanage', component: ChatManage},
+        {path: 'replymanage', name: 'replymanage', component: ReplyManage},
         {path: 'adminmanage', name: 'adminmanage', component: AdminManage},
         {path: 'operation', name: 'operation', component: Operation},
       ]

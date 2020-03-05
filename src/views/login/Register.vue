@@ -33,7 +33,10 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="grid-content">
-                                            <el-button type="primary" round @click="userGetVecode">获取验证码</el-button>
+                                            <el-button type="primary" round @click="userGetVecode"
+                                                       :disabled="isDisabled">
+                                                {{vecodeText}}
+                                            </el-button>
                                         </div>
                                     </el-col>
                                 </el-row>
@@ -81,7 +84,9 @@
           userEmail: '',
           userPassword: '',
           userVecode: ''
-        }
+        },
+        isDisabled: false,
+        vecodeText: '获取验证码'
       }
     },
     methods: {
@@ -114,6 +119,7 @@
         }
       },
       async userGetVecode() {
+
         if (!regUsernameExp.test(this.form.userName)) {
           Message('请正确填写用户名!(4-12位字符)');
         } else if (!regEmailExp.test(this.form.userEmail)) {
@@ -130,11 +136,29 @@
               message: '此邮箱已经被注册!'
             });
           } else if (res.err_code === 0) {
+
+            this.isDisabled = true
+            let time = 60;
+            let _this = this
+            let timer = setInterval(function () {
+
+              if (time < 1) {
+                _this.isDisabled = false;
+                _this.vecodeText = '获取验证码'
+                clearInterval(timer)
+
+              }else {
+                time--
+                _this.vecodeText = time + 's后点击'
+
+              }
+            }, 1000)
             Message({
               type: 'success',
               showClose: true,
               message: '邮件发送成功，去邮箱查看验证码!'
             });
+
           }
         }
       }

@@ -294,11 +294,13 @@
 
     .box {
         width: 100%;
-        height: 80px;
+        height: 70px;
     }
 
     .title {
         display: inline;
+        color: #409eff;
+        margin-left: 10px;
     }
 
     .footer {

@@ -5,13 +5,27 @@
                 <el-button style="position: fixed;border: 1px solid #f0f0f0;z-index: 999;left: 630px;top: 90px;"
                            type="primary" @click="chartDialog()">3D数据视图
                 </el-button>
-                <div v-show="dialogChartVisible" style="position: fixed;top:150px;background: white;z-index: 999;width: 75%;text-align: center">
-                    <div id="chart" ref="charts" style="width: 800px ;height: 630px">
+                <div v-show="dialogChartVisible"
+                     style="position: fixed;top:150px;background: white;z-index: 999;width: 75%;text-align: center">
+                    <el-row>
+                        <el-col :span="12">
+                            <div class="grid-content bg-purple" style="width: 100%;">
+                                <div id="chart" ref="charts" style="width: 600px; ;height: 630px">
 
-                    </div>
+                                </div>
+                            </div>
+                        </el-col>
+                        <el-col :span="12">
+                            <div class="grid-content bg-purple-light" style="width: 100%;">
+                                <div id="chart1" ref="charts" style="width: 600px; ;height: 630px">
+
+                                </div>
+                            </div>
+                        </el-col>
+                    </el-row>
 
                     <div slot="footer" class="dialog-footer">
-                        <el-button type="primary" @click="dialogChartVisible = false">关  闭</el-button>
+                        <el-button type="primary" @click="dialogChartVisible = false">关 闭</el-button>
                     </div>
                 </div>
                 <el-table
@@ -146,7 +160,8 @@
         //  评分属性
         value2: null,
         colors: {2: '#f2d3a3', 4: {value: '#F7BA2A', excluded: true}, 5: '#FF9900'},
-        chatsData: []
+        chatsData: [],
+        chartsData1: []
       }
     },
     created() {
@@ -159,10 +174,15 @@
 
         if (res.err_code === 0) {
           this.tableData = (res.results);
-          // console.log(res.chartsData);
+          // console.log(this.tableData);
           this.chatsData = res.chartsData
 
-          // this.drawLine();
+          let chartsData1 = []
+          for (let j = 0; j < res.results.length; j++) {
+
+            chartsData1.push([res.results[j].tRecommend, res.results[j].tCollectNum, res.results[j].tChatNum])
+          }
+          this.chartsData1 = chartsData1
 
         }
       },
@@ -201,50 +221,81 @@
         if (res.err_code === 0) {
         }
       },
-      chartDialog(){
+      chartDialog() {
         this.dialogChartVisible = true
         this.drawLine()
+        this.drawLine1()
       },
       drawLine() {
 
         let echarts = require('echarts')
         let myChart = echarts.init(document.getElementById('chart'));
-        let title = {
-          text: '文章数据展示',
-        };
-        let xAxis3D = {
-          name:'推荐值',
-          type: 'value'
-        };
-        let yAxis3D = {
-          name:'被收藏数/次',
-          type: 'value'
-        };
-        let zAxis3D = {
-          name:'被评论数/次',
-          type: 'value'
-        };
-        let grid3D = {};
-        let series = [
-          {
-            type: 'scatter3D', //设置图表类型为3d散点图
-            data: this.chatsData,
-            symbolSize:3,
-            lineStyle: {
-              width: 4
-            }
+
+        let symbolSize = 2.5;
+        let option = {
+          grid3D: {},
+          title: {
+            text: '全部文章数据展示',
           },
-        ];
-        let json = {};
-        json.title = title;
-        json.xAxis3D = xAxis3D;
-        json.yAxis3D = yAxis3D;
-        json.zAxis3D = zAxis3D;
-        json.grid3D = grid3D;
-        json.series = series;
-        // 为echarts对象加载数据
-        myChart.setOption(json);
+          xAxis3D: {
+            name: '推荐值',
+            type: 'value'
+          },
+          yAxis3D: {
+            name: '被收藏数/次',
+            type: 'value'
+          },
+          zAxis3D: {
+            name: '被评论数/次',
+            type: 'value'
+          },
+          dataset: {
+            source: this.chatsData
+          }
+          ,
+          series: [
+            {
+              type: 'scatter3D',
+              symbolSize: symbolSize,
+            }
+          ]
+        };
+        myChart.setOption(option);
       },
+      drawLine1() {
+
+        let echarts = require('echarts')
+        let myChart = echarts.init(document.getElementById('chart1'));
+
+        let option = {
+          grid3D: {},
+          title: {
+            text: '价值文章数据展示',
+          },
+          xAxis3D: {
+            name: '推荐值',
+            type: 'value'
+          },
+          yAxis3D: {
+            name: '被收藏数/次',
+            type: 'value'
+          },
+          zAxis3D: {
+            name: '被评论数/次',
+            type: 'value'
+          },
+          dataset: {
+            source: this.chartsData1
+          }
+          ,
+          series: [
+            {
+              type: 'scatter3D',
+            }
+          ]
+        };
+        myChart.setOption(option);
+      }
     }
 
   }

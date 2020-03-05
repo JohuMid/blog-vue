@@ -13,7 +13,7 @@
                             </el-col>
                             <el-col :span="18">
                                 <div class="grid-content bg-purple-light" style="text-align: center">
-                                    <h3>今日访问数</h3>
+                                    <h3>最近自然日访问数</h3>
                                     <h4 style="font-weight: bolder">{{visitNum}}</h4>
                                 </div>
                             </el-col>
@@ -34,7 +34,7 @@
                             </el-col>
                             <el-col :span="18">
                                 <div class="grid-content bg-purple-light" style="text-align: center">
-                                    <h3>今日阅读数</h3>
+                                    <h3>最近自然日阅读数</h3>
                                     <h4 style="font-weight: bolder">{{readNum}}</h4>
                                 </div>
                             </el-col>
@@ -54,7 +54,7 @@
                             </el-col>
                             <el-col :span="18">
                                 <div class="grid-content bg-purple-light" style="text-align: center">
-                                    <h3>今日登录数</h3>
+                                    <h3>最近自然日登录数</h3>
                                     <h4 style="font-weight: bolder">{{loginNum}}</h4>
                                 </div>
                             </el-col>
@@ -74,7 +74,7 @@
                             </el-col>
                             <el-col :span="18">
                                 <div class="grid-content bg-purple-light" style="text-align: center">
-                                    <h3>今日注册数</h3>
+                                    <h3>最近自然日注册数</h3>
                                     <h4 style="font-weight: bolder">{{registerNum}}</h4>
                                 </div>
                             </el-col>
